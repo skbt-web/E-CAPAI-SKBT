@@ -76,36 +76,36 @@
                     <input type="hidden" id="edit-id-sekolah">
                     <div class="grid grid-cols-1 gap-6">
                         <div>
-                            <label class="block font-semibold mb-2">Peringkat (Sila Pilih)</label>
+                            <label class="block font-semibold mb-2">2.1 Peringkat (Sila Pilih)</label>
                             <select id="peringkat-sekolah" required class="w-full p-3 border rounded-lg">
                                 <option value="">-- Pilih --</option>
                                 <option>DAERAH</option><option>NEGERI</option><option>KEBANGSAAN</option><option>ANTARABANGSA</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block font-semibold mb-2">Program/Aktiviti/Pertandingan</label>
+                            <label class="block font-semibold mb-2">2.2 Program/Aktiviti/Pertandingan</label>
                             <input type="text" id="program-sekolah" required class="w-full p-3 border rounded-lg">
                         </div>
                         <div>
-                            <label class="block font-semibold mb-2">Pautan Eviden Sekolah</label>
+                            <label class="block font-semibold mb-2">2.3 Pautan Eviden Sekolah</label>
                             <a href="https://drive.google.com/drive/folders/1araUUb_m405qeqwSCmDOTliM5McmKrDd?usp=sharing" target="_blank" class="text-blue-600 block bg-blue-50 p-3 rounded-lg border border-blue-100 mb-2">
                                 <i class="fab fa-google-drive mr-2"></i> Folder Google Drive Sekolah
                             </a>
                             <input type="url" id="eviden-sekolah" placeholder="Letak pautan spesifik jika ada" class="w-full p-3 border rounded-lg">
                         </div>
                         <div>
-                            <label class="block font-semibold mb-2">Anjuran</label>
+                            <label class="block font-semibold mb-2">2.4 Anjuran</label>
                             <input type="text" id="anjuran-sekolah" required class="w-full p-3 border rounded-lg">
                         </div>
                         <div>
-                            <label class="block font-semibold mb-2">Kategori</label>
+                            <label class="block font-semibold mb-2">2.5 Kategori</label>
                             <select id="kategori-sekolah" required class="w-full p-3 border rounded-lg">
                                 <option value="">-- Pilih --</option>
                                 <option>PERTANDINGAN</option><option>INOVASI</option><option>PENSIJILAN</option><option>ANUGERAH</option><option>PENGIKTIRAFAN</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block font-semibold mb-2">Pencapaian</label>
+                            <label class="block font-semibold mb-2">2.6 Pencapaian</label>
                             <select id="capai-sekolah" required class="w-full p-3 border rounded-lg">
                                 <option value="">-- Pilih --</option>
                                 <option>TEMPAT PERTAMA/ANUGERAH/PENGIKTIRAFAN</option><option>TEMPAT KEDUA</option><option>TEMPAT KETIGA</option><option>SAGUHATI</option><option>PENYERTAAN</option>
@@ -127,18 +127,18 @@
                     <input type="hidden" id="edit-id-guru">
                     <div class="grid grid-cols-1 gap-6">
                         <div>
-                            <label class="block font-semibold mb-2"> Peringkat</label>
+                            <label class="block font-semibold mb-2">3.1 Peringkat</label>
                             <select id="peringkat-guru" required class="w-full p-3 border rounded-lg">
                                 <option value="">-- Pilih --</option>
                                 <option>DAERAH</option><option>NEGERI</option><option>KEBANGSAAN</option><option>ANTARABANGSA</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block font-semibold mb-2">Program/Aktiviti/Pertandingan</label>
+                            <label class="block font-semibold mb-2">3.2 Program/Aktiviti/Pertandingan</label>
                             <input type="text" id="program-guru" required class="w-full p-3 border rounded-lg">
                         </div>
                         <div>
-                            <label class="block font-semibold mb-2"> Nama Guru</label>
+                            <label class="block font-semibold mb-2">3.3 Nama Guru</label>
                             <select id="guruSelect" onchange="updateEvidenGuru()" required class="w-full p-3 border rounded-lg">
                                 <option value="">-- Pilih Nama Guru --</option>
                                 <option data-drive="https://drive.google.com/drive/folders/1u_kumvl2ChnxHPmekUgObtxx2zdqHSTN?usp=sharing">ADLIN FAZLINDA BINTI ASNAN</option>
@@ -178,18 +178,18 @@
                             </a>
                         </div>
                         <div>
-                            <label class="block font-semibold mb-2"> Anjuran</label>
+                            <label class="block font-semibold mb-2">3.5 Anjuran</label>
                             <input type="text" id="anjuran-guru" required class="w-full p-3 border rounded-lg">
                         </div>
                         <div>
-                            <label class="block font-semibold mb-2">Kategori</label>
+                            <label class="block font-semibold mb-2">3.6 Kategori</label>
                             <select id="kategori-guru" required class="w-full p-3 border rounded-lg">
                                 <option value="">-- Pilih --</option>
                                 <option>PERTANDINGAN</option><option>INOVASI</option><option>PENSIJILAN</option><option>ANUGERAH</option><option>PENGIKTIRAFAN</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block font-semibold mb-2">Pencapaian</label>
+                            <label class="block font-semibold mb-2">3.7 Pencapaian</label>
                             <select id="capai-guru" required class="w-full p-3 border rounded-lg">
                                 <option value="">-- Pilih --</option>
                                 <option>TEMPAT PERTAMA/ANUGERAH/PENGIKTIRAFAN</option><option>TEMPAT KEDUA</option><option>TEMPAT KETIGA</option><option>SAGUHATI</option><option>PENYERTAAN</option>
@@ -260,8 +260,8 @@
             </div>
         </section>
 
-        <!-- ANALISIS PENCAPAIAN (NEW TAB) -->
-        <section id="content-analisis" class="tab-content hidden">
+        <!-- ANALISA PENCAPAIAN (NEW TAB) -->
+        <section id="content-analisa" class="tab-content hidden">
             <div class="space-y-8">
                 <!-- Statistik Ringkas -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 no-print">
@@ -283,10 +283,10 @@
                     </div>
                 </div>
 
-                <!-- Jadual Analisis Mengikut Guru -->
+                <!-- Jadual Analisa Mengikut Guru -->
                 <div class="bg-white rounded-xl shadow-lg p-6">
                     <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
-                        <i class="fas fa-table text-blue-500 mr-2"></i> ANALISIS INDUK PENCAPAIAN GURU
+                        <i class="fas fa-table text-blue-500 mr-2"></i> ANALISA INDUK PENCAPAIAN GURU
                     </h2>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
