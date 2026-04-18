@@ -19,6 +19,46 @@
         .stats-card { transition: transform 0.2s; }
         .stats-card:hover { transform: translateY(-5px); }
     </style>
+
+    <!-- Firebase SDK - Letakkan di sini -->
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+      import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, onSnapshot, orderBy } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+      import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyBgO8saVfliDuG5VZDueR9FHG64-DwRjEs", // GANTI INI DENGAN API KEY ANDA
+        authDomain: "ecapaiskbt.firebaseapp.com",
+        projectId: "ecapaiskbt",
+        storageBucket: "ecapaiskbt.appspot.com",
+        messagingSenderId: "328855405603",
+        appId: "1:328855405603:web:1:328855405603:web:32c5e193845b237e065d96" // GANTI INI DENGAN APP ID ANDA
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      window.db = getFirestore(app); // Export db globally for access in other scripts
+      window.auth = getAuth(app); // Export auth globally
+
+      // Log masuk secara anonim dan pantau status pengesahan
+      onAuthStateChanged(window.auth, (user) => {
+          if (user) {
+              console.log("Pengguna log masuk:", user.uid);
+              // Panggil fungsi untuk memuatkan data setelah pengguna disahkan
+              loadDataFromFirestore();
+          } else {
+              console.log("Tiada pengguna log masuk. Cuba log masuk secara anonim...");
+              signInAnonymously(window.auth).then(() => {
+                  console.log("Berjaya log masuk secara anonim.");
+              }).catch((error) => {
+                  console.error("Ralat log masuk anonim:", error);
+                  alert("Tidak dapat menyambung ke Firebase. Sila semak sambungan internet anda dan pastikan peraturan keselamatan anda membenarkan akses anonim.");
+              });
+          }
+      });
+    </script>
 </head>
 <body class="bg-gray-50 min-h-screen">
 
@@ -149,23 +189,4 @@
                                 <option data-drive="https://drive.google.com/drive/folders/1tdjXHx3bMNvbaMOTAXC2ehuhyRw3AKDJ?usp=sharing">NORMAZIDA BINTI AHMAD</option>
                                 <option data-drive="https://drive.google.com/drive/folders/1FOPSizHpG-pKH_znLCRLExxPiHIGY-hl?usp=sharing">MAZUIN BINTI AHMAD KAMIL</option>
                                 <option data-drive="https://drive.google.com/drive/folders/1dHNGPlD63lFpFWYkFeVCFzc79DSWJ2uU?usp=sharing">MOHD FAEIZ BIN SANUSI</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1bzoI2EL2tCxiEI5OhHXYgpx6cjj4fe-J?usp=sharing">MOHD FAIZAL BIN AHMAD</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1ui3OKAjSdvFbnY22AbtstRn3CaPaPaN7aZ?usp=sharing">NOHD HIJRAN BIN AHMAD IDRUS</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1Dkurl0f8iTU6RHISQPAxHnV7RxgTls33?usp=sharing">MOHD NOOR RASHID BIN WAGIMAN</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1BZUcS4D2zQOfHwly50M1Zi7KZuOvhCjP?usp=sharing">MUZAFFAR AHMAD BIN ZAINAL ABIDIN</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1NwNEcXKlvG8LEOgYDYkbgi97fnW-LpVL?usp=sharing">NOOR HASLINDA BINTI MOHD NASIRAN</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1bA-vpVh6QO2b2qY1FPDvMtZ-gSX6QWFw?usp=sharing">NORAZLINAWATI BINTI MAHMOOD</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1Si-IaR5HTxZCqOYStLClNhYsxowuyAVL?usp=sharing">NORHIDAYAH BINTI MOHAMAD</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1T5orYpUtPvzPsxtALMH5zJmyF59C4wJN?usp=sharing">NORSAADAH BINTI JAILANI</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1k8e_orxreEMAv1fwakrZKtMf6WVTPG2H?usp=sharing">NORZAIMAH BINTI ZAKARIA</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1VQXZ6BYew8ttGymx_HkT_Mlu8DUigVI2?usp=sharing">NUR 'AMALIA BINTI HASAN ZAKI</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1NkZNWaoXpa9JSbECz_1_uUNXYU75GkZa?usp=sharing">NURUL NAJIHAH BINTI SAHLAN</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1J7PNN2mZGiFiFdvGuw5qhGVbK6NqkPT7?usp=sharing">PSPA LAILA BINTI OTHMAN</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1gt_wXG-iQKBnVhfyLupgPTTmumo10QL3?usp=sharing">RAZIDAH BINTI MOHAMED</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1RgFQAd8lAWEvmeoLLhQtsA6CKmvK5fXk?usp=sharing">ROSELINDA BINTI LAZIM</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1GNBPbCi917rY8l24f8v26iktI9Mb_ljx?usp=sharing">RUMINI BINTI TUKIMAN</option>
-                                <option data-drive="https://drive.google.com/drive/folders/16r6OLhCjeoskbxUVoYnuIclsTl0d7_B8?usp=sharing">SITI NOOR FAKHARIYAH BINTI MD. SHAHID</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1Xw3fYDXccj5MJHpAMeb7RTrCGrWnHiHO?usp=sharing">SHAHMINA WARDAH BINTI SUARDI</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1ehX5znqZvyMyjCBRO55MaVSdYaitKaHF?usp=sharing">VEETIYAH A/P SUROMUTHU</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1t5Tu4CA-0ivVS6VM_ugU0SUPkoOmytrK?usp=sharing">ZULKARNAIN BIN M. AYOB</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1mEFlaUTNo response
+                                <option data-drive="https://drive.google.com/drive/folders/1bzoI2EL2tCxiEI5OhHXYgpx6cjj4No response
