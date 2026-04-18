@@ -1,0 +1,405 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  School, 
+  User, 
+  Table, 
+  ClipboardCheck, 
+  LayoutDashboard, 
+  Link as LinkIcon, 
+  ChevronDown,
+  Save,
+  FileText,
+  ExternalLink,
+  Upload
+} from 'lucide-react';
+
+const App = () => {
+  const [activeTab, setActiveTab] = useState('SEKOLAH');
+  
+  // Senarai Guru dan Pautan Eviden
+  const senaraiGuru = [
+    { nama: "ADLIN FAZLINDA BINTI ASNAN", link: "https://drive.google.com/drive/folders/1u_kumvl2ChnxHPmekUgObtxx2zdqHSTN?usp=sharing" },
+    { nama: "DAYANG NORFARAHAIN FAEEZA BINTI HASSIM", link: "https://drive.google.com/drive/folders/1tuEea9LUIA-zF2XD2oyTcLiQhtR-6VIK?usp=sharing" },
+    { nama: "KHAIRULAZMAN BIN DOLLAH", link: "https://drive.google.com/drive/folders/1Tpr_xlYxBtN6Dk1f2Qqet5EPgpeV3SpM?usp=sharing" },
+    { nama: "MAISARATUL SYABRINA IZZATI BINTI MUHAMAD SHUKRI", link: "https://drive.google.com/drive/folders/1h3YNfdtdZqSfaTX84cV3XwsZvLVnG9Gl?usp=sharing" },
+    { nama: "MASTAHIR BIN MD. AMIN", link: "https://drive.google.com/drive/folders/1H2Jrtr0pc6qoDr1kq5hF0B36Kg5fMgq5?usp=sharing" },
+    { nama: "NORMAZIDA BINTI AHMAD", link: "https://drive.google.com/drive/folders/1tdjXHx3bMNvbaMOTAXC2ehuhyRw3AKDJ?usp=sharing" },
+    { nama: "MAZUIN BINTI AHMAD KAMIL", link: "https://drive.google.com/drive/folders/1FOPSizHpG-pKH_znLCRLExxPiHIGY-hl?usp=sharing" },
+    { nama: "MOHD FAEIZ BIN SANUSI", link: "https://drive.google.com/drive/folders/1dHNGPlD63lFpFWYkFeVCFzc79DSWJ2uU?usp=sharing" },
+    { nama: "MOHD FAIZAL BIN AHMAD", link: "https://drive.google.com/drive/folders/1bzoI2EL2tCxiEI5OhHXYgpx6cjj4fe-J?usp=sharing" },
+    { nama: "NOHD HIJRAN BIN AHMAD IDRUS", link: "https://drive.google.com/drive/folders/1ui3OKAjSdvFbnY22AbtstRn3CaPaN7aZ?usp=sharing" },
+    { nama: "MOHD NOOR RASHID BIN WAGIMAN", link: "https://drive.google.com/drive/folders/1Dkurl0f8iTU6RHISQPAxHnV7RxgTls33?usp=sharing" },
+    { nama: "MUZAFFAR AHMAD BIN ZAINAL ABIDIN", link: "https://drive.google.com/drive/folders/1BZUcS4D2zQOfHwly50M1Zi7KZuOvhCjP?usp=sharing" },
+    { nama: "NOOR HASLINDA BINTI MOHD NASIRAN", link: "https://drive.google.com/drive/folders/1NwNEcXKlvG8LEOgYDYkbgi97fnW-LpVL?usp=sharing" },
+    { nama: "NORAZLINAWATI BINTI MAHMOOD", link: "https://drive.google.com/drive/folders/1bA-vpVh6QO2b2qY1FPDvMtZ-gSX6QWFw?usp=sharing" },
+    { nama: "NORHIDAYAH BINTI MOHAMAD", link: "https://drive.google.com/drive/folders/1Si-IaR5HTxZCqOYStLClNhYsxowuyAVL?usp=sharing" },
+    { nama: "NORSAADAH BINTI JAILANI", link: "https://drive.google.com/drive/folders/1T5orYpUtPvzPsxtALMH5zJmyF59C4wJN?usp=sharing" },
+    { nama: "NORZAIMAH BINTI ZAKARIA", link: "https://drive.google.com/drive/folders/1k8e_orxreEMAv1fwakrZKtMf6WVTPG2H?usp=sharing" },
+    { nama: "NUR 'AMALIA BINTI HASAN ZAKI", link: "https://drive.google.com/drive/folders/1VQXZ6BYew8ttGymx_HkT_Mlu8DUigVI2?usp=sharing" },
+    { nama: "NURUL NAJIHAH BINTI SAHLAN", link: "https://drive.google.com/drive/folders/1NkZNWaoXpa9JSbECz_1_uUNXYU75GkZa?usp=sharing" },
+    { nama: "PSPA LAILA BINTI OTHMAN", link: "https://drive.google.com/drive/folders/1J7PNN2mZGiFiFdvGuw5qhGVbK6NqkPT7?usp=sharing" },
+    { nama: "RAZIDAH BINTI MOHAMED", link: "https://drive.google.com/drive/folders/1gt_wXG-iQKBnVhfyLupgPTTmumo10QL3?usp=sharing" },
+    { nama: "ROSELINDA BINTI LAZIM", link: "https://drive.google.com/drive/folders/1RgFQAd8lAWEvmeoLLhQtsA6CKmvK5fXk?usp=sharing" },
+    { nama: "RUMINI BINTI TUKIMAN", link: "https://drive.google.com/drive/folders/1GNBPbCi917rY8l24f8v26iktI9Mb_ljx?usp=sharing" },
+    { nama: "SITI NOOR FAKHARIYAH BINTI MD. SHAHID", link: "https://drive.google.com/drive/folders/16r6OLhCjeoskbxUVoYnuIclsTl0d7_B8?usp=sharing" },
+    { nama: "SHAHMINA WARDAH BINTI SUARDI", link: "https://drive.google.com/drive/folders/1Xw3fYDXccj5MJHpAMeb7RTrCGrWnHiHO?usp=sharing" },
+    { nama: "VEETIYAH A/P SUROMUTHU", link: "https://drive.google.com/drive/folders/1ehX5znqZvyMyjCBRO55MaVSdYaitKaHF?usp=sharing" },
+    { nama: "ZULKARNAIN BIN M. AYOB", link: "https://drive.google.com/drive/folders/1t5Tu4CA-0ivVS6VM_ugU0SUPkoOmytrK?usp=sharing" },
+    { nama: "NOR AZAH BINTI MORI", link: "https://drive.google.com/drive/folders/1mEFlaUTpTYQi9BgonoJ4GB7SrWSePoCa?usp=sharing" }
+  ];
+
+  const [formDataSekolah, setFormDataSekolah] = useState({
+    peringkat: '',
+    program: '',
+    pautanEviden: 'https://drive.google.com/drive/folders/1araUUb_m405qeqwSCmDOTliM5McmKrDd?usp=sharing',
+    anjuran: '',
+    kategori: '',
+    pencapaian: ''
+  });
+
+  const [formDataIndividu, setFormDataIndividu] = useState({
+    peringkat: '',
+    program: '',
+    namaGuru: '',
+    pautanEviden: '',
+    anjuran: '',
+    kategori: '',
+    pencapaian: ''
+  });
+
+  const [submittedRecords, setSubmittedRecords] = useState([]);
+
+  // Auto-update pautan eviden guru apabila nama dipilih
+  useEffect(() => {
+    const guru = senaraiGuru.find(g => g.nama === formDataIndividu.namaGuru);
+    if (guru) {
+      setFormDataIndividu(prev => ({ ...prev, pautanEviden: guru.link }));
+    } else {
+      setFormDataIndividu(prev => ({ ...prev, pautanEviden: '' }));
+    }
+  }, [formDataIndividu.namaGuru]);
+
+  const handleInputChange = (e, type) => {
+    const { name, value } = e.target;
+    if (type === 'SEKOLAH') {
+      setFormDataSekolah(prev => ({ ...prev, [name]: value }));
+    } else {
+      setFormDataIndividu(prev => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleSubmit = (e, type) => {
+    e.preventDefault();
+    const data = type === 'SEKOLAH' ? formDataSekolah : formDataIndividu;
+    const newRecord = {
+      ...data,
+      id: Date.now(),
+      jenis: type,
+      tarikh: new Date().toISOString().split('T')[0]
+    };
+    setSubmittedRecords([newRecord, ...submittedRecords]);
+    
+    // Reset
+    if (type === 'SEKOLAH') {
+      setFormDataSekolah({
+        ...formDataSekolah,
+        peringkat: '', program: '', anjuran: '', kategori: '', pencapaian: ''
+      });
+    } else {
+      setFormDataIndividu({
+        peringkat: '', program: '', namaGuru: '', pautanEviden: '', anjuran: '', kategori: '', pencapaian: ''
+      });
+    }
+    alert(`Rekod ${type} telah berjaya disimpan!`);
+  };
+
+  const NavButton = ({ label, icon: Icon, tabId }) => (
+    <button
+      onClick={() => setActiveTab(tabId)}
+      className={`flex items-center gap-2 px-6 py-3 font-bold transition-all duration-200 border-b-4 ${
+        activeTab === tabId 
+          ? 'bg-yellow-400 border-yellow-600 text-black shadow-inner' 
+          : 'bg-white border-transparent text-gray-600 hover:bg-yellow-50'
+      }`}
+    >
+      <Icon size={20} />
+      <span className="hidden md:inline">{label}</span>
+    </button>
+  );
+
+  return (
+    <div className="min-h-screen bg-white font-sans text-gray-800">
+      {/* Header */}
+      <header className="bg-yellow-400 p-6 shadow-md border-b-2 border-yellow-500">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex items-center gap-4">
+            <div className="bg-white p-3 rounded-full shadow-lg">
+              <School size={32} className="text-yellow-600" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-black tracking-tight text-black uppercase">e-CAPAI SKBT</h1>
+              <p className="text-sm font-semibold uppercase opacity-80">Sistem Pengurusan Pencapaian Sekolah & Guru</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Tabs */}
+      <nav className="bg-white shadow-sm sticky top-0 z-10 overflow-x-auto border-b">
+        <div className="max-w-7xl mx-auto flex">
+          <NavButton label="SEKOLAH" icon={School} tabId="SEKOLAH" />
+          <NavButton label="INDIVIDU" icon={User} tabId="INDIVIDU" />
+          <NavButton label="REKOD SEKOLAH" icon={Table} tabId="PAPARAN_SEKOLAH" />
+          <NavButton label="REKOD GURU" icon={ClipboardCheck} tabId="PAPARAN_GURU" />
+        </div>
+      </nav>
+
+      <main className="max-w-7xl mx-auto p-4 md:p-8">
+        
+        {/* MODUL SEKOLAH */}
+        {activeTab === 'SEKOLAH' && (
+          <div className="animate-in fade-in duration-500">
+            <div className="flex items-center gap-3 mb-8 border-l-8 border-yellow-400 pl-4">
+              <h2 className="text-2xl font-bold text-gray-900 uppercase">BORANG REKOD SEKOLAH</h2>
+            </div>
+
+            <div className="bg-white border-2 border-yellow-400 rounded-2xl shadow-xl overflow-hidden">
+              <form onSubmit={(e) => handleSubmit(e, 'SEKOLAH')} className="p-6 md:p-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-500 uppercase">1.1 Peringkat (Sila Pilih)</label>
+                  <select name="peringkat" value={formDataSekolah.peringkat} onChange={(e) => handleInputChange(e, 'SEKOLAH')} required className="w-full p-4 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-yellow-400 outline-none">
+                    <option value="">-- Pilih Peringkat --</option>
+                    <option value="DAERAH">DAERAH</option>
+                    <option value="NEGERI">NEGERI</option>
+                    <option value="KEBANGSAAN">KEBANGSAAN</option>
+                    <option value="ANTARABANGSA">ANTARABANGSA</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-500 uppercase">1.2 Program/Aktiviti/Pertandingan</label>
+                  <input type="text" name="program" value={formDataSekolah.program} onChange={(e) => handleInputChange(e, 'SEKOLAH')} required className="w-full p-4 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-yellow-400 outline-none" />
+                </div>
+
+                <div className="md:col-span-2 space-y-2">
+                  <label className="text-xs font-black text-gray-500 uppercase">1.3 Pautan Eviden Sekolah</label>
+                  <div className="flex gap-2">
+                    <input type="text" readOnly value={formDataSekolah.pautanEviden} className="flex-1 p-4 bg-yellow-50 border-2 border-yellow-100 rounded-xl text-blue-600 text-sm truncate" />
+                    <button type="button" onClick={() => window.open(formDataSekolah.pautanEviden, '_blank')} className="bg-yellow-400 px-6 rounded-xl font-bold text-black hover:bg-yellow-500"><ExternalLink size={20}/></button>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-500 uppercase">1.4 Anjuran</label>
+                  <input type="text" name="anjuran" value={formDataSekolah.anjuran} onChange={(e) => handleInputChange(e, 'SEKOLAH')} required className="w-full p-4 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-yellow-400 outline-none" />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-500 uppercase">1.5 Kategori (Sila Pilih)</label>
+                  <select name="kategori" value={formDataSekolah.kategori} onChange={(e) => handleInputChange(e, 'SEKOLAH')} required className="w-full p-4 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-yellow-400 outline-none">
+                    <option value="">-- Pilih Kategori --</option>
+                    <option value="PERTANDINGAN">PERTANDINGAN</option>
+                    <option value="INOVASI">INOVASI</option>
+                    <option value="PENSIJILAN">PENSIJILAN</option>
+                    <option value="ANUGERAH">ANUGERAH</option>
+                    <option value="PENGIKTIRAFAN">PENGIKTIRAFAN</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-500 uppercase">1.6 Pencapaian (Sila Pilih)</label>
+                  <select name="pencapaian" value={formDataSekolah.pencapaian} onChange={(e) => handleInputChange(e, 'SEKOLAH')} required className="w-full p-4 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-yellow-400 outline-none">
+                    <option value="">-- Pilih Pencapaian --</option>
+                    <option value="TEMPAT PERTAMA/ANUGERAH/PENGIKTIRAFAN">TEMPAT PERTAMA/ANUGERAH/PENGIKTIRAFAN</option>
+                    <option value="TEMPAT KEDUA">TEMPAT KEDUA</option>
+                    <option value="TEMPAT KETIGA">TEMPAT KETIGA</option>
+                    <option value="SAGUHATI">SAGUHATI</option>
+                    <option value="PENYERTAAN">PENYERTAAN</option>
+                  </select>
+                </div>
+
+                {/* 2.7 Muat Naik Sijil Sekolah */}
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-500 uppercase">2.7 Muat Naik Sijil (Maks 20MB)</label>
+                  <button 
+                    type="button" 
+                    onClick={() => window.open(formDataSekolah.pautanEviden, '_blank')}
+                    className="w-full p-4 bg-blue-600 border-2 border-blue-700 text-white rounded-xl font-bold flex justify-center items-center gap-2 hover:bg-blue-700 shadow-lg transition-all"
+                  >
+                    <Upload size={20} /> MUAT NAIK KE GOOGLE DRIVE SEKOLAH
+                  </button>
+                  <p className="text-[10px] text-gray-400 italic">Klik untuk terus ke folder Google Drive Sekolah.</p>
+                </div>
+
+                <button type="submit" className="md:col-span-2 mt-4 bg-yellow-400 hover:bg-yellow-500 py-4 rounded-xl font-black shadow-lg flex justify-center items-center gap-2 text-black transition-colors">
+                  <Save size={20} /> SIMPAN REKOD SEKOLAH
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* MODUL INDIVIDU */}
+        {activeTab === 'INDIVIDU' && (
+          <div className="animate-in fade-in duration-500">
+            <div className="flex items-center gap-3 mb-8 border-l-8 border-yellow-400 pl-4">
+              <h2 className="text-2xl font-bold text-gray-900 uppercase">BORANG REKOD INDIVIDU</h2>
+            </div>
+
+            <div className="bg-white border-2 border-yellow-400 rounded-2xl shadow-xl overflow-hidden">
+              <form onSubmit={(e) => handleSubmit(e, 'INDIVIDU')} className="p-6 md:p-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-500 uppercase">1.1 Peringkat</label>
+                  <select name="peringkat" value={formDataIndividu.peringkat} onChange={(e) => handleInputChange(e, 'INDIVIDU')} required className="w-full p-4 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-yellow-400 outline-none">
+                    <option value="">-- Pilih Peringkat --</option>
+                    <option value="DAERAH">DAERAH</option>
+                    <option value="NEGERI">NEGERI</option>
+                    <option value="KEBANGSAAN">KEBANGSAAN</option>
+                    <option value="ANTARABANGSA">ANTARABANGSA</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-500 uppercase">1.2 Program/Aktiviti/Pertandingan</label>
+                  <input type="text" name="program" value={formDataIndividu.program} onChange={(e) => handleInputChange(e, 'INDIVIDU')} required className="w-full p-4 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-yellow-400 outline-none" />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-500 uppercase">1.3 Nama Guru</label>
+                  <select name="namaGuru" value={formDataIndividu.namaGuru} onChange={(e) => handleInputChange(e, 'INDIVIDU')} required className="w-full p-4 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-yellow-400 outline-none">
+                    <option value="">-- Pilih Nama Guru --</option>
+                    {senaraiGuru.map((g, idx) => (
+                      <option key={idx} value={g.nama}>{g.nama}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-500 uppercase">1.4 Pautan Eviden Guru</label>
+                  <div className="flex gap-2">
+                    <input 
+                      type="text" 
+                      readOnly 
+                      placeholder="Pautan muncul selepas nama dipilih"
+                      value={formDataIndividu.pautanEviden} 
+                      className="flex-1 p-4 bg-yellow-50 border-2 border-yellow-100 rounded-xl text-blue-600 text-sm truncate" 
+                    />
+                    {formDataIndividu.pautanEviden && (
+                      <button type="button" onClick={() => window.open(formDataIndividu.pautanEviden, '_blank')} className="bg-yellow-400 px-6 rounded-xl font-bold text-black hover:bg-yellow-500"><ExternalLink size={20}/></button>
+                    )}
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-500 uppercase">1.5 Anjuran</label>
+                  <input type="text" name="anjuran" value={formDataIndividu.anjuran} onChange={(e) => handleInputChange(e, 'INDIVIDU')} required className="w-full p-4 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-yellow-400 outline-none" />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-500 uppercase">1.6 Kategori</label>
+                  <select name="kategori" value={formDataIndividu.kategori} onChange={(e) => handleInputChange(e, 'INDIVIDU')} required className="w-full p-4 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-yellow-400 outline-none">
+                    <option value="">-- Pilih Kategori --</option>
+                    <option value="PERTANDINGAN">PERTANDINGAN</option>
+                    <option value="INOVASI">INOVASI</option>
+                    <option value="PENSIJILAN">PENSIJILAN</option>
+                    <option value="ANUGERAH">ANUGERAH</option>
+                    <option value="PENGIKTIRAFAN">PENGIKTIRAFAN</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-500 uppercase">1.7 Pencapaian</label>
+                  <select name="pencapaian" value={formDataIndividu.pencapaian} onChange={(e) => handleInputChange(e, 'INDIVIDU')} required className="w-full p-4 bg-gray-50 border-2 border-gray-100 rounded-xl focus:border-yellow-400 outline-none">
+                    <option value="">-- Pilih Pencapaian --</option>
+                    <option value="TEMPAT PERTAMA/ANUGERAH/PENGIKTIRAFAN">TEMPAT PERTAMA/ANUGERAH/PENGIKTIRAFAN</option>
+                    <option value="TEMPAT KEDUA">TEMPAT KEDUA</option>
+                    <option value="TEMPAT KETIGA">TEMPAT KETIGA</option>
+                    <option value="SAGUHATI">SAGUHATI</option>
+                    <option value="PENYERTAAN">PENYERTAAN</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-500 uppercase">3.8 Muat Naik Sijil (Maks 20MB)</label>
+                  <button 
+                    type="button" 
+                    disabled={!formDataIndividu.pautanEviden}
+                    onClick={() => window.open(formDataIndividu.pautanEviden, '_blank')}
+                    className={`w-full p-4 rounded-xl font-bold flex justify-center items-center gap-2 border-2 transition-all ${
+                      formDataIndividu.pautanEviden 
+                        ? 'bg-blue-600 border-blue-700 text-white hover:bg-blue-700 shadow-lg cursor-pointer' 
+                        : 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed'
+                    }`}
+                  >
+                    <Upload size={20} /> MUAT NAIK KE GOOGLE DRIVE
+                  </button>
+                  <p className="text-[10px] text-gray-400 italic">Sila pilih nama guru terlebih dahulu untuk folder Drive.</p>
+                </div>
+
+                <button type="submit" className="md:col-span-2 mt-4 bg-yellow-400 hover:bg-yellow-500 py-4 rounded-xl font-black shadow-lg flex justify-center items-center gap-2 text-black transition-colors">
+                  <Save size={20} /> SIMPAN REKOD INDIVIDU
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* PAPARAN REKOD */}
+        {(activeTab === 'PAPARAN_SEKOLAH' || activeTab === 'PAPARAN_GURU') && (
+          <div className="animate-in slide-in-from-bottom-4 duration-500">
+             <div className="flex justify-between items-center mb-6 border-l-8 border-yellow-400 pl-4">
+              <h2 className="text-2xl font-bold text-gray-900 uppercase">
+                {activeTab === 'PAPARAN_SEKOLAH' ? 'REKOD SEKOLAH' : 'REKOD GURU / INDIVIDU'}
+              </h2>
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+              <table className="w-full text-left">
+                <thead className="bg-yellow-400">
+                  <tr>
+                    <th className="p-4 font-black text-xs uppercase text-black">Bil</th>
+                    <th className="p-4 font-black text-xs uppercase text-black">Program</th>
+                    {activeTab === 'PAPARAN_GURU' && <th className="p-4 font-black text-xs uppercase text-black">Nama Guru</th>}
+                    <th className="p-4 font-black text-xs uppercase text-black">Peringkat</th>
+                    <th className="p-4 font-black text-xs uppercase text-black">Pencapaian</th>
+                    <th className="p-4 font-black text-xs uppercase text-black">Tindakan</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {submittedRecords
+                    .filter(r => activeTab === 'PAPARAN_SEKOLAH' ? r.jenis === 'SEKOLAH' : r.jenis === 'INDIVIDU')
+                    .map((r, i) => (
+                      <tr key={r.id} className="hover:bg-yellow-50 transition-colors">
+                        <td className="p-4 font-bold text-gray-400">{i + 1}</td>
+                        <td className="p-4 font-semibold text-sm">{r.program}</td>
+                        {activeTab === 'PAPARAN_GURU' && <td className="p-4 text-xs font-bold text-gray-600">{r.namaGuru}</td>}
+                        <td className="p-4 text-xs">
+                          <span className="px-2 py-1 bg-yellow-100 border border-yellow-200 rounded font-bold uppercase text-yellow-800">{r.peringkat}</span>
+                        </td>
+                        <td className="p-4 text-sm font-bold text-yellow-700">{r.pencapaian}</td>
+                        <td className="p-4">
+                           <button onClick={() => window.open(r.pautanEviden, '_blank')} className="bg-blue-50 p-2 rounded-lg text-blue-600 hover:bg-blue-100 transition-colors"><LinkIcon size={18}/></button>
+                        </td>
+                      </tr>
+                    ))}
+                  {submittedRecords.filter(r => activeTab === 'PAPARAN_SEKOLAH' ? r.jenis === 'SEKOLAH' : r.jenis === 'INDIVIDU').length === 0 && (
+                    <tr><td colSpan={activeTab === 'PAPARAN_GURU' ? 6 : 5} className="p-10 text-center text-gray-400 italic font-medium">Tiada rekod disimpan untuk paparan ini.</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+      </main>
+
+      <footer className="mt-20 py-8 bg-gray-50 border-t border-gray-100 text-center">
+        <p className="text-[10px] text-gray-400 font-black tracking-[0.2em] uppercase">© 2024 e-CAPAI SKBT | DIGITAL RECORD MANAGEMENT</p>
+      </footer>
+    </div>
+  );
+};
+
+export default App;
