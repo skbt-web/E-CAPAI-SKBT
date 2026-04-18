@@ -1,374 +1,417 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  School, 
-  User, 
-  ClipboardList, 
-  Users, 
-  Upload, 
-  Trash2, 
-  Edit, 
-  Printer, 
-  Eye, 
-  ExternalLink,
-  ChevronRight,
-  Plus
-} from 'lucide-react';
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-CAPAI SKBT - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+        .bg-custom-yellow {
+            background-color: #FFD700;
+        }
+        .text-custom-yellow {
+            color: #D4AF37;
+        }
+        .tab-active {
+            border-bottom: 4px solid #FFD700;
+            color: #000;
+            font-weight: bold;
+        }
+        @media print {
+            .no-print {
+                display: none;
+            }
+            .print-only {
+                display: block;
+            }
+        }
+        .print-only {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
 
-const App = () => {
-  const [activeTab, setActiveTab] = useState('MAIN');
-  const [schoolRecords, setSchoolRecords] = useState([]);
-  const [teacherRecords, setTeacherRecords] = useState([]);
-  const [selectedTeacher, setSelectedTeacher] = useState("");
-  const [teacherDriveLink, setTeacherDriveLink] = useState("");
-
-  const teachers = [
-    { name: "ADLIN FAZLINDA BINTI ASNAN", link: "https://drive.google.com/drive/folders/1u_kumvl2ChnxHPmekUgObtxx2zdqHSTN?usp=sharing" },
-    { name: "DAYANG NORFARAHAIN FAEEZA BINTI HASSIM", link: "https://drive.google.com/drive/folders/1tuEea9LUIA-zF2XD2oyTcLiQhtR-6VIK?usp=sharing" },
-    { name: "KHAIRULAZMAN BIN DOLLAH", link: "https://drive.google.com/drive/folders/1Tpr_xlYxBtN6Dk1f2Qqet5EPgpeV3SpM?usp=sharing" },
-    { name: "MAISARATUL SYABRINA IZZATI BINTI MUHAMAD SHUKRI", link: "https://drive.google.com/drive/folders/1h3YNfdtdZqSfaTX84cV3XwsZvLVnG9Gl?usp=sharing" },
-    { name: "MASTAHIR BIN MD. AMIN", link: "https://drive.google.com/drive/folders/1H2Jrtr0pc6qoDr1kq5hF0B36Kg5fMgq5?usp=sharing" },
-    { name: "NORMAZIDA BINTI AHMAD", link: "https://drive.google.com/drive/folders/1tdjXHx3bMNvbaMOTAXC2ehuhyRw3AKDJ?usp=sharing" },
-    { name: "MAZUIN BINTI AHMAD KAMIL", link: "https://drive.google.com/drive/folders/1FOPSizHpG-pKH_znLCRLExxPiHIGY-hl?usp=sharing" },
-    { name: "MOHD FAEIZ BIN SANUSI", link: "https://drive.google.com/drive/folders/1dHNGPlD63lFpFWYkFeVCFzc79DSWJ2uU?usp=sharing" },
-    { name: "MOHD FAIZAL BIN AHMAD", link: "https://drive.google.com/drive/folders/1bzoI2EL2tCxiEI5OhHXYgpx6cjj4fe-J?usp=sharing" },
-    { name: "NOHD HIJRAN BIN AHMAD IDRUS", link: "https://drive.google.com/drive/folders/1ui3OKAjSdvFbnY22AbtstRn3CaPaN7aZ?usp=sharing" },
-    { name: "MOHD NOOR RASHID BIN WAGIMAN", link: "https://drive.google.com/drive/folders/1Dkurl0f8iTU6RHISQPAxHnV7RxgTls33?usp=sharing" },
-    { name: "MUZAFFAR AHMAD BIN ZAINAL ABIDIN", link: "https://drive.google.com/drive/folders/1BZUcS4D2zQOfHwly50M1Zi7KZuOvhCjP?usp=sharing" },
-    { name: "NOOR HASLINDA BINTI MOHD NASIRAN", link: "https://drive.google.com/drive/folders/1NwNEcXKlvG8LEOgYDYkbgi97fnW-LpVL?usp=sharing" },
-    { name: "NORAZLINAWATI BINTI MAHMOOD", link: "https://drive.google.com/drive/folders/1bA-vpVh6QO2b2qY1FPDvMtZ-gSX6QWFw?usp=sharing" },
-    { name: "NORHIDAYAH BINTI MOHAMAD", link: "https://drive.google.com/drive/folders/1Si-IaR5HTxZCqOYStLClNhYsxowuyAVL?usp=sharing" },
-    { name: "NORSAADAH BINTI JAILANI", link: "https://drive.google.com/drive/folders/1T5orYpUtPvzPsxtALMH5zJmyF59C4wJN?usp=sharing" },
-    { name: "NORZAIMAH BINTI ZAKARIA", link: "https://drive.google.com/drive/folders/1k8e_orxreEMAv1fwakrZKtMf6WVTPG2H?usp=sharing" },
-    { name: "NUR 'AMALIA BINTI HASAN ZAKI", link: "https://drive.google.com/drive/folders/1VQXZ6BYew8ttGymx_HkT_Mlu8DUigVI2?usp=sharing" },
-    { name: "NURUL NAJIHAH BINTI SAHLAN", link: "https://drive.google.com/drive/folders/1NkZNWaoXpa9JSbECz_1_uUNXYU75GkZa?usp=sharing" },
-    { name: "PSPA LAILA BINTI OTHMAN", link: "https://drive.google.com/drive/folders/1J7PNN2mZGiFiFdvGuw5qhGVbK6NqkPT7?usp=sharing" },
-    { name: "RAZIDAH BINTI MOHAMED", link: "https://drive.google.com/drive/folders/1gt_wXG-iQKBnVhfyLupgPTTmumo10QL3?usp=sharing" },
-    { name: "ROSELINDA BINTI LAZIM", link: "https://drive.google.com/drive/folders/1RgFQAd8lAWEvmeoLLhQtsA6CKmvK5fXk?usp=sharing" },
-    { name: "RUMINI BINTI TUKIMAN", link: "https://drive.google.com/drive/folders/1GNBPbCi917rY8l24f8v26iktI9Mb_ljx?usp=sharing" },
-    { name: "SITI NOOR FAKHARIYAH BINTI MD. SHAHID", link: "https://drive.google.com/drive/folders/16r6OLhCjeoskbxUVoYnuIclsTl0d7_B8?usp=sharing" },
-    { name: "SHAHMINA WARDAH BINTI SUARDI", link: "https://drive.google.com/drive/folders/1Xw3fYDXccj5MJHpAMeb7RTrCGrWnHiHO?usp=sharing" },
-    { name: "VEETIYAH A/P SUROMUTHU", link: "https://drive.google.com/drive/folders/1ehX5znqZvyMyjCBRO55MaVSdYaitKaHF?usp=sharing" },
-    { name: "ZULKARNAIN BIN M. AYOB", link: "https://drive.google.com/drive/folders/1t5Tu4CA-0ivVS6VM_ugU0SUPkoOmytrK?usp=sharing" },
-    { name: "NOR AZAH BINTI MORI", link: "https://drive.google.com/drive/folders/1mEFlaUTpTYQi9BgonoJ4GB7SrWSePoCa?usp=sharing" }
-  ];
-
-  const categories = ["PERTANDINGAN", "INOVASI", "PENSIJILAN", "ANUGERAH", "PENGIKTIRAFAN"];
-  const achievements = ["TEMPAT PERTAMA/ANUGERAH/PENGIKTIRAFAN", "TEMPAT KEDUA", "TEMPAT KETIGA", "SAGUHATI", "PENYERTAAN"];
-  const levels = ["DAERAH", "NEGERI", "KEBANGSAAN", "ANTARABANGSA"];
-
-  const handleTeacherChange = (e) => {
-    const name = e.target.value;
-    setSelectedTeacher(name);
-    const teacher = teachers.find(t => t.name === name);
-    setTeacherDriveLink(teacher ? teacher.link : "");
-  };
-
-  const addRecord = (type, formData) => {
-    const newRecord = {
-      ...formData,
-      id: Date.now(),
-      date: new Date().toLocaleDateString('en-MY')
-    };
-    if (type === 'SCHOOL') setSchoolRecords([...schoolRecords, newRecord]);
-    else setTeacherRecords([...teacherRecords, newRecord]);
-    setActiveTab(type === 'SCHOOL' ? 'VIEW_SCHOOL' : 'VIEW_TEACHER');
-  };
-
-  const deleteRecord = (type, id) => {
-    if (type === 'SCHOOL') setSchoolRecords(schoolRecords.filter(r => r.id !== id));
-    else setTeacherRecords(teacherRecords.filter(r => r.id !== id));
-  };
-
-  const MainMenu = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
-      <button onClick={() => setActiveTab('FORM_SCHOOL')} className="bg-white p-8 rounded-2xl shadow-lg border-b-8 border-yellow-400 hover:scale-105 transition-transform flex flex-col items-center">
-        <School size={48} className="text-yellow-600 mb-4" />
-        <span className="font-bold text-gray-800 uppercase tracking-wider">Sekolah</span>
-      </button>
-      <button onClick={() => setActiveTab('FORM_INDIVIDUAL')} className="bg-white p-8 rounded-2xl shadow-lg border-b-8 border-yellow-400 hover:scale-105 transition-transform flex flex-col items-center">
-        <User size={48} className="text-yellow-600 mb-4" />
-        <span className="font-bold text-gray-800 uppercase tracking-wider">Individu</span>
-      </button>
-      <button onClick={() => setActiveTab('VIEW_SCHOOL')} className="bg-white p-8 rounded-2xl shadow-lg border-b-8 border-yellow-400 hover:scale-105 transition-transform flex flex-col items-center">
-        <ClipboardList size={48} className="text-yellow-600 mb-4" />
-        <span className="font-bold text-gray-800 uppercase tracking-wider text-center">Rekod Sekolah</span>
-      </button>
-      <button onClick={() => setActiveTab('VIEW_TEACHER')} className="bg-white p-8 rounded-2xl shadow-lg border-b-8 border-yellow-400 hover:scale-105 transition-transform flex flex-col items-center">
-        <Users size={48} className="text-yellow-600 mb-4" />
-        <span className="font-bold text-gray-800 uppercase tracking-wider text-center">Rekod Guru</span>
-      </button>
-    </div>
-  );
-
-  const SchoolForm = () => {
-    const [formData, setFormData] = useState({
-      level: '', program: '', organizer: '', category: '', achievement: ''
-    });
-
-    return (
-      <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-xl border-t-4 border-yellow-400">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">Borang Rekod Sekolah</h2>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-semibold mb-1">Peringkat</label>
-            <select className="w-full p-2 border rounded bg-gray-50 focus:ring-2 focus:ring-yellow-400 outline-none" 
-                    onChange={e => setFormData({...formData, level: e.target.value})}>
-              <option value="">Sila Pilih</option>
-              {levels.map(l => <option key={l} value={l}>{l}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-semibold mb-1">Program/Aktiviti/Pertandingan</label>
-            <input type="text" className="w-full p-2 border rounded bg-gray-50" placeholder="Nama Program" 
-                   onChange={e => setFormData({...formData, program: e.target.value})} />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold mb-1">Pautan Eviden Sekolah</label>
-            <div className="flex items-center gap-2 p-2 bg-yellow-50 border border-yellow-200 rounded text-blue-600 text-sm overflow-hidden">
-               <ExternalLink size={14} />
-               <a href="https://drive.google.com/drive/folders/1araUUb_m405qeqwSCmDOTliM5McmKrDd?usp=sharing" target="_blank" className="truncate">Google Drive Folder</a>
+    <!-- Header Section -->
+    <header class="bg-custom-yellow p-6 shadow-md no-print">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <div class="bg-white p-2 rounded-full shadow">
+                    <i class="fas fa-graduation-cap text-3xl text-yellow-600"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800">e-CAPAI SKBT</h1>
+                    <p class="text-sm text-gray-700">Sistem Rekod Pencapaian Sekolah & Guru</p>
+                </div>
             </div>
-          </div>
-          <div>
-            <label className="block text-sm font-semibold mb-1">Anjuran</label>
-            <input type="text" className="w-full p-2 border rounded bg-gray-50" placeholder="Nama Penganjur"
-                   onChange={e => setFormData({...formData, organizer: e.target.value})} />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold mb-1">Kategori</label>
-            <select className="w-full p-2 border rounded bg-gray-50" 
-                    onChange={e => setFormData({...formData, category: e.target.value})}>
-              <option value="">Sila Pilih</option>
-              {categories.map(c => <option key={c} value={c}>{c}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-semibold mb-1">Pencapaian</label>
-            <select className="w-full p-2 border rounded bg-gray-50" 
-                    onChange={e => setFormData({...formData, achievement: e.target.value})}>
-              <option value="">Sila Pilih</option>
-              {achievements.map(a => <option key={a} value={a}>{a}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-semibold mb-1">Muat Naik Sijil (Maks: 20MB)</label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:bg-gray-50 cursor-pointer">
-              <Upload className="mx-auto text-gray-400 mb-2" />
-              <span className="text-xs text-gray-500">Klik untuk pilih fail atau heret ke sini</span>
+            <div class="mt-4 md:mt-0 italic text-sm text-gray-800">
+                Kecemerlangan Berterusan
             </div>
-          </div>
-          <button onClick={() => addRecord('SCHOOL', formData)} className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-3 rounded-lg mt-4 shadow-md transition-colors">
-            SIMPAN REKOD
-          </button>
         </div>
-      </div>
-    );
-  };
+    </header>
 
-  const IndividualForm = () => {
-    const [formData, setFormData] = useState({
-      level: '', program: '', organizer: '', category: '', achievement: '', teacher: ''
-    });
-
-    return (
-      <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-xl border-t-4 border-yellow-400">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">Borang Rekod Individu</h2>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-semibold mb-1">Peringkat</label>
-            <select className="w-full p-2 border rounded bg-gray-50" onChange={e => setFormData({...formData, level: e.target.value})}>
-              <option value="">Sila Pilih</option>
-              {levels.map(l => <option key={l} value={l}>{l}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-semibold mb-1">Nama Guru</label>
-            <select className="w-full p-2 border rounded bg-gray-50" onChange={(e) => {
-              handleTeacherChange(e);
-              setFormData({...formData, teacher: e.target.value});
-            }}>
-              <option value="">Sila Pilih</option>
-              {teachers.map(t => <option key={t.name} value={t.name}>{t.name}</option>)}
-            </select>
-          </div>
-          {teacherDriveLink && (
-            <div>
-              <label className="block text-sm font-semibold mb-1 text-green-700">Pautan Eviden Guru</label>
-              <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded text-blue-600 font-medium">
-                <ExternalLink size={16} />
-                <a href={teacherDriveLink} target="_blank" className="underline text-sm break-all">Klik: Pautan Google Drive {selectedTeacher}</a>
-              </div>
-            </div>
-          )}
-          <div>
-            <label className="block text-sm font-semibold mb-1">Program/Aktiviti/Pertandingan</label>
-            <input type="text" className="w-full p-2 border rounded bg-gray-50" placeholder="Nama Program" onChange={e => setFormData({...formData, program: e.target.value})} />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold mb-1">Anjuran</label>
-            <input type="text" className="w-full p-2 border rounded bg-gray-50" placeholder="Nama Penganjur" onChange={e => setFormData({...formData, organizer: e.target.value})} />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold mb-1">Kategori</label>
-            <select className="w-full p-2 border rounded bg-gray-50" onChange={e => setFormData({...formData, category: e.target.value})}>
-              <option value="">Sila Pilih</option>
-              {categories.map(c => <option key={c} value={c}>{c}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-semibold mb-1">Pencapaian</label>
-            <select className="w-full p-2 border rounded bg-gray-50" onChange={e => setFormData({...formData, achievement: e.target.value})}>
-              <option value="">Sila Pilih</option>
-              {achievements.map(a => <option key={a} value={a}>{a}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-semibold mb-1 text-red-600 font-bold uppercase">Muat Naik Sijil (20MB)</label>
-            <p className="text-xs text-gray-500 mb-2 italic">Muat naik terus ke Google Drive anda dengan menekan butang di bawah.</p>
-            <a 
-              href={teacherDriveLink || "#"} 
-              target={teacherDriveLink ? "_blank" : "_self"}
-              className={`w-full flex items-center justify-center gap-2 p-3 rounded-lg border-2 border-dashed ${teacherDriveLink ? 'border-yellow-500 bg-yellow-50 hover:bg-yellow-100 text-yellow-700' : 'border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed'}`}
-            >
-              <Upload size={20} />
-              <span className="font-bold">BUKA GOOGLE DRIVE UNTUK MUAT NAIK</span>
-            </a>
-          </div>
-          <button onClick={() => addRecord('INDIVIDUAL', formData)} className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-3 rounded-lg mt-4 shadow-md transition-all">
-            SIMPAN REKOD INDIVIDU
-          </button>
+    <!-- Navigation Tabs -->
+    <nav class="bg-white shadow-sm sticky top-0 z-10 no-print">
+        <div class="container mx-auto flex overflow-x-auto border-b">
+            <button onclick="showTab('sekolah')" id="tab-sekolah" class="px-6 py-4 whitespace-nowrap transition hover:bg-yellow-50 tab-active">
+                <i class="fas fa-school mr-2"></i> SEKOLAH
+            </button>
+            <button onclick="showTab('individu')" id="tab-individu" class="px-6 py-4 whitespace-nowrap transition hover:bg-yellow-50">
+                <i class="fas fa-user mr-2"></i> INDIVIDU
+            </button>
+            <button onclick="showTab('rekod-sekolah')" id="tab-rekod-sekolah" class="px-6 py-4 whitespace-nowrap transition hover:bg-yellow-50">
+                <i class="fas fa-list-ul mr-2"></i> REKOD SEKOLAH
+            </button>
+            <button onclick="showTab('rekod-guru')" id="tab-rekod-guru" class="px-6 py-4 whitespace-nowrap transition hover:bg-yellow-50">
+                <i class="fas fa-users-viewfinder mr-2"></i> REKOD GURU
+            </button>
         </div>
-      </div>
-    );
-  };
+    </nav>
 
-  const DataTable = ({ title, data, type }) => (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden border-t-4 border-yellow-400">
-      <div className="p-4 bg-yellow-50 border-b flex justify-between items-center">
-        <h2 className="text-xl font-bold text-gray-800">{title}</h2>
-        <button className="flex items-center gap-2 bg-gray-800 text-white px-3 py-1 rounded text-sm hover:bg-gray-700">
-          <Printer size={16} /> Cetak Semua
-        </button>
-      </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm text-left">
-          <thead className="bg-gray-100 text-gray-700 uppercase font-bold">
-            <tr>
-              <th className="px-4 py-3 border">Bil</th>
-              <th className="px-4 py-3 border">Tarikh</th>
-              {type === 'TEACHER' && <th className="px-4 py-3 border">Nama Guru</th>}
-              <th className="px-4 py-3 border">Peringkat</th>
-              <th className="px-4 py-3 border">Program/Aktiviti</th>
-              <th className="px-4 py-3 border">Anjuran</th>
-              <th className="px-4 py-3 border">Kategori</th>
-              <th className="px-4 py-3 border">Pencapaian</th>
-              <th className="px-4 py-3 border text-center">Tindakan</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.length === 0 ? (
-              <tr>
-                <td colSpan={type === 'TEACHER' ? 9 : 8} className="text-center py-10 text-gray-400 italic">
-                  Tiada rekod ditemui. Sila tambah rekod baharu.
-                </td>
-              </tr>
-            ) : (
-              data.map((record, index) => (
-                <tr key={record.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-4 py-3 border font-medium">{index + 1}</td>
-                  <td className="px-4 py-3 border">{record.date}</td>
-                  {type === 'TEACHER' && <td className="px-4 py-3 border font-semibold">{record.teacher}</td>}
-                  <td className="px-4 py-3 border"><span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold">{record.level}</span></td>
-                  <td className="px-4 py-3 border">{record.program}</td>
-                  <td className="px-4 py-3 border">{record.organizer}</td>
-                  <td className="px-4 py-3 border">{record.category}</td>
-                  <td className="px-4 py-3 border font-medium text-yellow-700">{record.achievement}</td>
-                  <td className="px-4 py-3 border">
-                    <div className="flex justify-center gap-2">
-                      <button className="p-1.5 text-blue-600 hover:bg-blue-50 rounded" title="Pratonton"><Eye size={18} /></button>
-                      <button className="p-1.5 text-green-600 hover:bg-green-50 rounded" title="Edit"><Edit size={18} /></button>
-                      <button className="p-1.5 text-gray-600 hover:bg-gray-100 rounded" title="Cetak"><Printer size={18} /></button>
-                      <button onClick={() => deleteRecord(type === 'TEACHER' ? 'TEACHER' : 'SCHOOL', record.id)} className="p-1.5 text-red-600 hover:bg-red-50 rounded" title="Padam"><Trash2 size={18} /></button>
+    <!-- Main Content Container -->
+    <main class="container mx-auto p-4 md:p-8">
+
+        <!-- 1. BORANG SEKOLAH -->
+        <section id="content-sekolah" class="tab-content">
+            <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg border-t-8 border-yellow-400 p-6 md:p-10">
+                <h2 class="text-2xl font-bold mb-6 flex items-center text-gray-800">
+                    <i class="fas fa-file-signature text-yellow-500 mr-3"></i> BORANG REKOD SEKOLAH
+                </h2>
+                <form onsubmit="handleSubmit(event, 'Sekolah')">
+                    <div class="grid grid-cols-1 gap-6">
+                        <div>
+                            <label class="block font-semibold mb-2">2.1 Peringkat (Sila Pilih)</label>
+                            <select required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none">
+                                <option value="">-- Pilih Peringkat --</option>
+                                <option>DAERAH</option>
+                                <option>NEGERI</option>
+                                <option>KEBANGSAAN</option>
+                                <option>ANTARABANGSA</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-2">2.2 Program/Aktiviti/Pertandingan</label>
+                            <input type="text" required placeholder="Masukkan nama program" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-2">2.3 Pautan Eviden Sekolah</label>
+                            <a href="https://drive.google.com/drive/folders/1araUUb_m405qeqwSCmDOTliM5McmKrDd?usp=sharing" target="_blank" class="text-blue-600 hover:underline flex items-center bg-blue-50 p-3 rounded-lg border border-blue-100">
+                                <i class="fab fa-google-drive mr-2"></i> Buka Folder Google Drive Sekolah
+                            </a>
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-2">2.4 Anjuran</label>
+                            <input type="text" required placeholder="Nama penganjur" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-2">2.5 Kategori (Sila Pilih)</label>
+                            <select required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none">
+                                <option value="">-- Pilih Kategori --</option>
+                                <option>PERTANDINGAN</option>
+                                <option>INOVASI</option>
+                                <option>PENSIJILAN</option>
+                                <option>ANUGERAH</option>
+                                <option>PENGIKTIRAFAN</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-2">2.6 Pencapaian (Sila Pilih)</label>
+                            <select required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none">
+                                <option value="">-- Pilih Pencapaian --</option>
+                                <option>TEMPAT PERTAMA/ANUGERAH/PENGIKTIRAFAN</option>
+                                <option>TEMPAT KEDUA</option>
+                                <option>TEMPAT KETIGA</option>
+                                <option>SAGUHATI</option>
+                                <option>PENYERTAAN</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-2">2.7 Muat Naik Sijil (Maks: 20MB)</label>
+                            <div class="border-2 border-dashed border-gray-300 p-6 text-center rounded-xl bg-gray-50 hover:bg-yellow-50 transition cursor-pointer">
+                                <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-2"></i>
+                                <p class="text-sm text-gray-600">Klik atau heret fail ke sini untuk muat naik</p>
+                                <input type="file" class="hidden" id="fileSekolah" accept=".pdf,.jpg,.png">
+                                <span id="fileNameSekolah" class="text-xs text-green-600 block mt-2"></span>
+                            </div>
+                        </div>
+                        <button type="submit" class="bg-custom-yellow hover:bg-yellow-500 text-gray-900 font-bold py-3 rounded-lg shadow transition transform active:scale-95">
+                            SIMPAN REKOD SEKOLAH
+                        </button>
                     </div>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- 2. BORANG INDIVIDU -->
+        <section id="content-individu" class="tab-content hidden">
+            <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg border-t-8 border-yellow-400 p-6 md:p-10">
+                <h2 class="text-2xl font-bold mb-6 flex items-center text-gray-800">
+                    <i class="fas fa-user-edit text-yellow-500 mr-3"></i> BORANG REKOD INDIVIDU
+                </h2>
+                <form onsubmit="handleSubmit(event, 'Individu')">
+                    <div class="grid grid-cols-1 gap-6">
+                        <div>
+                            <label class="block font-semibold mb-2">3.1 Peringkat (Sila Pilih)</label>
+                            <select required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none">
+                                <option value="">-- Pilih Peringkat --</option>
+                                <option>DAERAH</option>
+                                <option>NEGERI</option>
+                                <option>KEBANGSAAN</option>
+                                <option>ANTARABANGSA</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-2">3.2 Program/Aktiviti/Pertandingan</label>
+                            <input type="text" required placeholder="Masukkan nama program" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-2">3.3 Nama Guru (Sila Pilih)</label>
+                            <select id="guruSelect" onchange="updateEvidenGuru()" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none">
+                                <option value="">-- Pilih Nama Guru --</option>
+                                <option value="https://drive.google.com/drive/folders/1u_kumvl2ChnxHPmekUgObtxx2zdqHSTN?usp=sharing">ADLIN FAZLINDA BINTI ASNAN</option>
+                                <option value="https://drive.google.com/drive/folders/1tuEea9LUIA-zF2XD2oyTcLiQhtR-6VIK?usp=sharing">DAYANG NORFARAHAIN FAEEZA BINTI HASSIM</option>
+                                <option value="https://drive.google.com/drive/folders/1Tpr_xlYxBtN6Dk1f2Qqet5EPgpeV3SpM?usp=sharing">KHAIRULAZMAN BIN DOLLAH</option>
+                                <option value="https://drive.google.com/drive/folders/1h3YNfdtdZqSfaTX84cV3XwsZvLVnG9Gl?usp=sharing">MAISARATUL SYABRINA IZZATI BINTI MUHAMAD SHUKRI</option>
+                                <option value="https://drive.google.com/drive/folders/1H2Jrtr0pc6qoDr1kq5hF0B36Kg5fMgq5?usp=sharing">MASTAHIR BIN MD. AMIN</option>
+                                <option value="https://drive.google.com/drive/folders/1tdjXHx3bMNvbaMOTAXC2ehuhyRw3AKDJ?usp=sharing">NORMAZIDA BINTI AHMAD</option>
+                                <option value="https://drive.google.com/drive/folders/1FOPSizHpG-pKH_znLCRLExxPiHIGY-hl?usp=sharing">MAZUIN BINTI AHMAD KAMIL</option>
+                                <option value="https://drive.google.com/drive/folders/1dHNGPlD63lFpFWYkFeVCFzc79DSWJ2uU?usp=sharing">MOHD FAEIZ BIN SANUSI</option>
+                                <option value="https://drive.google.com/drive/folders/1bzoI2EL2tCxiEI5OhHXYgpx6cjj4fe-J?usp=sharing">MOHD FAIZAL BIN AHMAD</option>
+                                <option value="https://drive.google.com/drive/folders/1ui3OKAjSdvFbnY22AbtstRn3CaPaN7aZ?usp=sharing">NOHD HIJRAN BIN AHMAD IDRUS</option>
+                                <option value="https://drive.google.com/drive/folders/1Dkurl0f8iTU6RHISQPAxHnV7RxgTls33?usp=sharing">MOHD NOOR RASHID BIN WAGIMAN</option>
+                                <option value="https://drive.google.com/drive/folders/1BZUcS4D2zQOfHwly50M1Zi7KZuOvhCjP?usp=sharing">MUZAFFAR AHMAD BIN ZAINAL ABIDIN</option>
+                                <option value="https://drive.google.com/drive/folders/1NwNEcXKlvG8LEOgYDYkbgi97fnW-LpVL?usp=sharing">NOOR HASLINDA BINTI MOHD NASIRAN</option>
+                                <option value="https://drive.google.com/drive/folders/1bA-vpVh6QO2b2qY1FPDvMtZ-gSX6QWFw?usp=sharing">NORAZLINAWATI BINTI MAHMOOD</option>
+                                <option value="https://drive.google.com/drive/folders/1Si-IaR5HTxZCqOYStLClNhYsxowuyAVL?usp=sharing">NORHIDAYAH BINTI MOHAMAD</option>
+                                <option value="https://drive.google.com/drive/folders/1T5orYpUtPvzPsxtALMH5zJmyF59C4wJN?usp=sharing">NORSAADAH BINTI JAILANI</option>
+                                <option value="https://drive.google.com/drive/folders/1k8e_orxreEMAv1fwakrZKtMf6WVTPG2H?usp=sharing">NORZAIMAH BINTI ZAKARIA</option>
+                                <option value="https://drive.google.com/drive/folders/1VQXZ6BYew8ttGymx_HkT_Mlu8DUigVI2?usp=sharing">NUR 'AMALIA BINTI HASAN ZAKI</option>
+                                <option value="https://drive.google.com/drive/folders/1NkZNWaoXpa9JSbECz_1_uUNXYU75GkZa?usp=sharing">NURUL NAJIHAH BINTI SAHLAN</option>
+                                <option value="https://drive.google.com/drive/folders/1J7PNN2mZGiFiFdvGuw5qhGVbK6NqkPT7?usp=sharing">PSPA LAILA BINTI OTHMAN</option>
+                                <option value="https://drive.google.com/drive/folders/1gt_wXG-iQKBnVhfyLupgPTTmumo10QL3?usp=sharing">RAZIDAH BINTI MOHAMED</option>
+                                <option value="https://drive.google.com/drive/folders/1RgFQAd8lAWEvmeoLLhQtsA6CKmvK5fXk?usp=sharing">ROSELINDA BINTI LAZIM</option>
+                                <option value="https://drive.google.com/drive/folders/1GNBPbCi917rY8l24f8v26iktI9Mb_ljx?usp=sharing">RUMINI BINTI TUKIMAN</option>
+                                <option value="https://drive.google.com/drive/folders/16r6OLhCjeoskbxUVoYnuIclsTl0d7_B8?usp=sharing">SITI NOOR FAKHARIYAH BINTI MD. SHAHID</option>
+                                <option value="https://drive.google.com/drive/folders/1Xw3fYDXccj5MJHpAMeb7RTrCGrWnHiHO?usp=sharing">SHAHMINA WARDAH BINTI SUARDI</option>
+                                <option value="https://drive.google.com/drive/folders/1ehX5znqZvyMyjCBRO55MaVSdYaitKaHF?usp=sharing">VEETIYAH A/P SUROMUTHU</option>
+                                <option value="https://drive.google.com/drive/folders/1t5Tu4CA-0ivVS6VM_ugU0SUPkoOmytrK?usp=sharing">ZULKARNAIN BIN M. AYOB</option>
+                                <option value="https://drive.google.com/drive/folders/1mEFlaUTpTYQi9BgonoJ4GB7SrWSePoCa?usp=sharing">NOR AZAH BINTI MORI</option>
+                            </select>
+                        </div>
+                        <div id="pautanGuruWrapper" class="hidden">
+                            <label class="block font-semibold mb-2">3.4 Pautan Eviden Guru</label>
+                            <a id="pautanGuruLink" href="#" target="_blank" class="text-blue-600 hover:underline flex items-center bg-blue-50 p-3 rounded-lg border border-blue-100">
+                                <i class="fab fa-google-drive mr-2"></i> Buka Folder Google Drive Guru
+                            </a>
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-2">3.5 Anjuran</label>
+                            <input type="text" required placeholder="Nama penganjur" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-2">3.6 Kategori (Sila Pilih)</label>
+                            <select required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none">
+                                <option value="">-- Pilih Kategori --</option>
+                                <option>PERTANDINGAN</option>
+                                <option>INOVASI</option>
+                                <option>PENSIJILAN</option>
+                                <option>ANUGERAH</option>
+                                <option>PENGIKTIRAFAN</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-2">3.7 Pencapaian (Sila Pilih)</label>
+                            <select required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-yellow-400 outline-none">
+                                <option value="">-- Pilih Pencapaian --</option>
+                                <option>TEMPAT PERTAMA/ANUGERAH/PENGIKTIRAFAN</option>
+                                <option>TEMPAT KEDUA</option>
+                                <option>TEMPAT KETIGA</option>
+                                <option>SAGUHATI</option>
+                                <option>PENYERTAAN</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-2">3.8 Muat Naik Sijil (Maks: 20MB)</label>
+                            <div class="border-2 border-dashed border-gray-300 p-6 text-center rounded-xl bg-gray-50 hover:bg-yellow-50 transition cursor-pointer">
+                                <i class="fas fa-file-pdf text-4xl text-gray-400 mb-2"></i>
+                                <p class="text-sm text-gray-600">Terus ke Link Google Drive untuk muat naik</p>
+                                <p class="text-xs text-gray-400 mt-1">Pastikan anda memuat naik ke folder yang betul</p>
+                            </div>
+                        </div>
+                        <button type="submit" class="bg-custom-yellow hover:bg-yellow-500 text-gray-900 font-bold py-3 rounded-lg shadow transition transform active:scale-95">
+                            SIMPAN REKOD INDIVIDU
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- 3. PAPARAN REKOD SEKOLAH -->
+        <section id="content-rekod-sekolah" class="tab-content hidden">
+            <div class="bg-white rounded-xl shadow-lg p-6 overflow-x-auto">
+                <div class="flex justify-between items-center mb-6 no-print">
+                    <h2 class="text-2xl font-bold text-gray-800">REKOD PENCAPAIAN SEKOLAH</h2>
+                    <button onclick="window.print()" class="bg-gray-800 text-white px-4 py-2 rounded flex items-center">
+                        <i class="fas fa-print mr-2"></i> Cetak Semua
+                    </button>
+                </div>
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-yellow-100 text-gray-700">
+                            <th class="p-3 border">BIL</th>
+                            <th class="p-3 border">TARIKH</th>
+                            <th class="p-3 border">PERINGKAT</th>
+                            <th class="p-3 border">PROGRAM/AKTIVITI</th>
+                            <th class="p-3 border">ANJURAN</th>
+                            <th class="p-3 border">KATEGORI</th>
+                            <th class="p-3 border">PENCAPAIAN</th>
+                            <th class="p-3 border no-print">TINDAKAN</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-sekolah-body">
+                        <!-- Mock Data -->
+                        <tr>
+                            <td class="p-3 border">1</td>
+                            <td class="p-3 border">15/04/2024</td>
+                            <td class="p-3 border">NEGERI</td>
+                            <td class="p-3 border font-semibold">Inovasi STEM 2024</td>
+                            <td class="p-3 border">JPN Johor</td>
+                            <td class="p-3 border">INOVASI</td>
+                            <td class="p-3 border text-green-700 font-bold">TEMPAT PERTAMA</td>
+                            <td class="p-3 border no-print flex space-x-2">
+                                <button class="p-2 text-blue-600 hover:bg-blue-50 rounded" title="Preview"><i class="fas fa-eye"></i></button>
+                                <button class="p-2 text-yellow-600 hover:bg-yellow-50 rounded" title="Edit"><i class="fas fa-edit"></i></button>
+                                <button class="p-2 text-red-600 hover:bg-red-50 rounded" title="Delete"><i class="fas fa-trash"></i></button>
+                                <button class="p-2 text-gray-600 hover:bg-gray-50 rounded" title="Print"><i class="fas fa-print"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 4. PAPARAN REKOD GURU -->
+        <section id="content-rekod-guru" class="tab-content hidden">
+            <div class="bg-white rounded-xl shadow-lg p-6 overflow-x-auto">
+                <div class="flex justify-between items-center mb-6 no-print">
+                    <h2 class="text-2xl font-bold text-gray-800">REKOD PENCAPAIAN GURU</h2>
+                    <button onclick="window.print()" class="bg-gray-800 text-white px-4 py-2 rounded flex items-center">
+                        <i class="fas fa-print mr-2"></i> Cetak Semua
+                    </button>
+                </div>
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-yellow-100 text-gray-700">
+                            <th class="p-3 border">BIL</th>
+                            <th class="p-3 border">TARIKH</th>
+                            <th class="p-3 border">PERINGKAT</th>
+                            <th class="p-3 border">PROGRAM/AKTIVITI</th>
+                            <th class="p-3 border">ANJURAN</th>
+                            <th class="p-3 border">KATEGORI</th>
+                            <th class="p-3 border">PENCAPAIAN</th>
+                            <th class="p-3 border no-print">TINDAKAN</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-guru-body">
+                        <!-- Mock Data -->
+                        <tr>
+                            <td class="p-3 border">1</td>
+                            <td class="p-3 border">12/03/2024</td>
+                            <td class="p-3 border">KEBANGSAAN</td>
+                            <td class="p-3 border font-semibold">Anugerah Ikon Guru</td>
+                            <td class="p-3 border">KPM</td>
+                            <td class="p-3 border">ANUGERAH</td>
+                            <td class="p-3 border text-purple-700 font-bold">PENGIKTIRAFAN</td>
+                            <td class="p-3 border no-print flex space-x-2">
+                                <button class="p-2 text-blue-600 hover:bg-blue-50 rounded" title="Preview"><i class="fas fa-eye"></i></button>
+                                <button class="p-2 text-yellow-600 hover:bg-yellow-50 rounded" title="Edit"><i class="fas fa-edit"></i></button>
+                                <button class="p-2 text-red-600 hover:bg-red-50 rounded" title="Delete"><i class="fas fa-trash"></i></button>
+                                <button class="p-2 text-gray-600 hover:bg-gray-50 rounded" title="Print"><i class="fas fa-print"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-12 p-8 text-center text-gray-500 text-sm no-print">
+        &copy; 2024 SKBT - Sistem e-CAPAI. Hak Cipta Terpelihara.
+    </footer>
+
+    <!-- Message Toast -->
+    <div id="toast" class="fixed bottom-10 right-10 transform translate-y-20 opacity-0 transition duration-500 bg-green-600 text-white px-6 py-3 rounded-lg shadow-2xl z-50 flex items-center">
+        <i class="fas fa-check-circle mr-2"></i> <span id="toast-msg">Mesej berjaya!</span>
     </div>
-  );
 
-  return (
-    <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
-      {/* Header */}
-      <header className="bg-yellow-400 p-6 shadow-md border-b-4 border-yellow-500">
-        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-             <div className="bg-white p-3 rounded-full shadow-inner">
-               <School className="text-yellow-500" size={32} />
-             </div>
-             <div>
-               <h1 className="text-3xl font-black text-gray-900 tracking-tight">e-CAPAI SKBT</h1>
-               <p className="text-sm font-semibold text-yellow-900 uppercase tracking-widest">Sistem Rekod Pencapaian Sekolah & Guru</p>
-             </div>
-          </div>
-          <nav className="flex gap-2 bg-white/40 p-1 rounded-lg backdrop-blur-sm">
-            <button onClick={() => setActiveTab('MAIN')} className={`px-4 py-2 rounded-md font-bold transition-all ${activeTab === 'MAIN' ? 'bg-white text-yellow-600 shadow' : 'text-yellow-900 hover:bg-white/50'}`}>UTAMA</button>
-            <button onClick={() => setActiveTab('VIEW_SCHOOL')} className={`px-4 py-2 rounded-md font-bold transition-all ${activeTab === 'VIEW_SCHOOL' ? 'bg-white text-yellow-600 shadow' : 'text-yellow-900 hover:bg-white/50'}`}>REKOD SEKOLAH</button>
-            <button onClick={() => setActiveTab('VIEW_TEACHER')} className={`px-4 py-2 rounded-md font-bold transition-all ${activeTab === 'VIEW_TEACHER' ? 'bg-white text-yellow-600 shadow' : 'text-yellow-900 hover:bg-white/50'}`}>REKOD GURU</button>
-          </nav>
-        </div>
-      </header>
+    <script>
+        // Tab Navigation Logic
+        function showTab(tabId) {
+            // Hide all contents
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            // Remove active style from all tabs
+            document.querySelectorAll('nav button').forEach(el => el.classList.remove('tab-active'));
+            
+            // Show selected content
+            document.getElementById('content-' + tabId).classList.remove('hidden');
+            // Add active style to selected tab
+            document.getElementById('tab-' + tabId).classList.add('tab-active');
+        }
 
-      {/* Main Content */}
-      <main className="container mx-auto py-8 px-4 flex-grow">
-        {activeTab === 'MAIN' && <MainMenu />}
-        {activeTab === 'FORM_SCHOOL' && (
-          <div>
-            <button onClick={() => setActiveTab('MAIN')} className="mb-4 text-sm font-bold flex items-center gap-1 text-gray-500 hover:text-yellow-600">
-              <ChevronRight className="rotate-180" size={16} /> KEMBALI
-            </button>
-            <SchoolForm />
-          </div>
-        )}
-        {activeTab === 'FORM_INDIVIDUAL' && (
-          <div>
-            <button onClick={() => setActiveTab('MAIN')} className="mb-4 text-sm font-bold flex items-center gap-1 text-gray-500 hover:text-yellow-600">
-              <ChevronRight className="rotate-180" size={16} /> KEMBALI
-            </button>
-            <IndividualForm />
-          </div>
-        )}
-        {activeTab === 'VIEW_SCHOOL' && (
-          <div className="space-y-4">
-             <div className="flex justify-end">
-                <button onClick={() => setActiveTab('FORM_SCHOOL')} className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold px-4 py-2 rounded-lg flex items-center gap-2 shadow transition-all">
-                  <Plus size={18} /> TAMBAH REKOD SEKOLAH
-                </button>
-             </div>
-             <DataTable title="Paparan Rekod Sekolah" data={schoolRecords} type="SCHOOL" />
-          </div>
-        )}
-        {activeTab === 'VIEW_TEACHER' && (
-          <div className="space-y-4">
-             <div className="flex justify-end">
-                <button onClick={() => setActiveTab('FORM_INDIVIDUAL')} className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold px-4 py-2 rounded-lg flex items-center gap-2 shadow transition-all">
-                  <Plus size={18} /> TAMBAH REKOD GURU
-                </button>
-             </div>
-             <DataTable title="Paparan Rekod Guru" data={teacherRecords} type="TEACHER" />
-          </div>
-        )}
-      </main>
+        // Update Google Drive Link based on Guru selection
+        function updateEvidenGuru() {
+            const select = document.getElementById('guruSelect');
+            const wrapper = document.getElementById('pautanGuruWrapper');
+            const link = document.getElementById('pautanGuruLink');
+            
+            if (select.value) {
+                link.href = select.value;
+                wrapper.classList.remove('hidden');
+            } else {
+                wrapper.classList.add('hidden');
+            }
+        }
 
-      {/* Footer */}
-      <footer className="bg-white border-t py-4 text-center text-gray-400 text-xs">
-        &copy; {new Date().getFullYear()} e-CAPAI SKBT - Unit Pengurusan Maklumat Sekolah.
-      </footer>
-    </div>
-  );
-};
+        // Mock Submission Handler
+        function handleSubmit(event, type) {
+            event.preventDefault();
+            
+            showToast(`Rekod ${type} berjaya disimpan!`);
+            event.target.reset();
+            
+            if(type === 'Individu') {
+                document.getElementById('pautanGuruWrapper').classList.add('hidden');
+            }
+        }
 
-export default App;
+        // Toast Notification System
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = message;
+            
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Handle File Input Feedback
+        document.getElementById('fileSekolah')?.addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || "";
+            document.getElementById('fileNameSekolah').innerText = fileName ? `Fail dipilih: ${fileName}` : "";
+        });
+
+        // Initialize view
+        window.onload = () => {
+            console.log("e-CAPAI SKBT Dashboard Loaded.");
+        };
+    </script>
+</body>
+</html>
