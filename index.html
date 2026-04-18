@@ -34,7 +34,7 @@
         projectId: "ecapaiskbt",
         storageBucket: "ecapaiskbt.appspot.com",
         messagingSenderId: "328855405603",
-        appId: "1:328855405603:web:32c5e193845b237e065d96" // App ID yang telah diperbaiki
+        appId: "1:328855405603:web:32c5e193845b237e065d96"
       };
 
       // Initialize Firebase
@@ -47,7 +47,9 @@
           if (user) {
               console.log("Pengguna log masuk:", user.uid);
               // Panggil fungsi untuk memuatkan data setelah pengguna disahkan
-              loadDataFromFirestore();
+              if (typeof loadDataFromFirestore === 'function') { // Pastikan fungsi wujud sebelum memanggil
+                  loadDataFromFirestore();
+              }
           } else {
               console.log("Tiada pengguna log masuk. Cuba log masuk secara anonim...");
               signInAnonymously(window.auth).then(() => {
@@ -182,13 +184,4 @@
                             <select id="guruSelect" onchange="updateEvidenGuru()" required class="w-full p-3 border rounded-lg">
                                 <option value="">-- Pilih Nama Guru --</option>
                                 <option data-drive="https://drive.google.com/drive/folders/1u_kumvl2ChnxHPmekUgObtxx2zdqHSTN?usp=sharing">ADLIN FAZLINDA BINTI ASNAN</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1tuEea9LUIA-zF2XD2oyTcLiQhtR-6VIK?usp=sharing">DAYANG NORFARAHAIN FAEEZA BINTI HASSIM</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1Tpr_xlYxBtN6Dk1f2Qqet5EPgpeV3SpM?usp=sharing">KHAIRULAZMAN BIN DOLLAH</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1h3YNfdtdZqSfaTX84cV3XwsZvLVnG9Gl?usp=sharing">MAISARATUL SYABRINA IZZATI BINTI MUHAMAD SHUKRI</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1H2Jrtr0pc6qoDr1kq5hF0B36Kg5fMgq5?usp=sharing">MASTAHIR BIN MD. AMIN</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1tdjXHx3bMNvbaMOTAXC2ehuhyRw3AKDJ?usp=sharing">NORMAZIDA BINTI AHMAD</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1FOPSizHpG-pKH_znLCRLExxPiHIGY-hl?usp=sharing">MAZUIN BINTI AHMAD KAMIL</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1dHNGPlD63lFpFWYkFeVCFzc79DSWJ2uU?usp=sharing">MOHD FAEIZ BIN SANUSI</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1bzoI2EL2tCxiEI5OhHXYgpx6cjj4fe-J?usp=sharing">MOHD FAIZAL BIN AHMAD</option>
-                                <option data-drive="https://drive.google.com/drive/folders/1ui3OKAjSdvFbnY22AbtstRn3CaPaPaN7aZ?usp=sharing">NOHD HIJRAN BIN AHMAD IDRUS</option>
-                                <optionNo response
+                                <option data-drive="https://drive.google.com/drive/folders/1tuEea9LUIA-zF2XD2oyTcLiQNo response
