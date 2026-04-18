@@ -21,6 +21,32 @@
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
+    <!-- FIREBASE MODULE -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBgO8saVfliDuG5VZDueR9FHG64-DwRjEs",
+    authDomain: "ecapaiskbt.firebaseapp.com",
+    projectId: "ecapaiskbt",
+    storageBucket: "ecapaiskbt.firebasestorage.app",
+    messagingSenderId: "328855405603",
+    appId: "1:328855405603:web:32c5e193845b237e065d96"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const dbFirebase = getFirestore(app);
+
+  window.simpanKeFirebase = async function(data, jenis) {
+    try {
+      const docRef = await addDoc(collection(dbFirebase, jenis), data);
+      console.log("Firebase berjaya:", docRef.id);
+    } catch (e) {
+      console.error("Firebase error:", e);
+    }
+  };
+</script>
 
     <!-- Header -->
     <header class="bg-custom-yellow p-6 shadow-md no-print">
@@ -576,7 +602,7 @@
                 
                 // Select Guru
                 const select = document.getElementById('guruSelect');
-                for(let i=0; i<select.options.length; i++) {
+                for(let i=0; i<sele ct.options.length; i++) {
                     if(select.options[i].text === item.guru) {
                         select.selectedIndex = i;
                         break;
