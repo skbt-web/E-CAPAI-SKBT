@@ -358,11 +358,32 @@
             { name: "NOR AZAH BINTI MORI", drive: "https://drive.google.com/drive/folders/1mEFlaUTpTYQi9BgonoJ4GB7SrWSePoCa?usp=sharing" }
         ];
 
-        // Data Store (Using localStorage)
-        let db = {
-            sekolah: JSON.parse(localStorage.getItem('skbt_sekolah') || '[]'),
-            guru: JSON.parse(localStorage.getItem('skbt_guru') || '[]')
-        };
+        <!-- FIREBASE MODULE -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBgO8saVfliDuG5VZDueR9FHG64-DwRjEs",
+    authDomain: "ecapaiskbt.firebaseapp.com",
+    projectId: "ecapaiskbt",
+    storageBucket: "ecapaiskbt.firebasestorage.app",
+    messagingSenderId: "328855405603",
+    appId: "1:328855405603:web:32c5e193845b237e065d96"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const dbFirebase = getFirestore(app);
+
+  window.simpanKeFirebase = async function(data, jenis) {
+    try {
+      const docRef = await addDoc(collection(dbFirebase, jenis), data);
+      console.log("Firebase berjaya:", docRef.id);
+    } catch (e) {
+      console.error("Firebase error:", e);
+    }
+  };
+</scrip
 
         // Tab Logic
         function showTab(tabId) {
