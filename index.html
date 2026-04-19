@@ -364,6 +364,9 @@
             guru: JSON.parse(localStorage.getItem('skbt_guru') || '[]')
         };
 
+        // 🔥 TAMBAH LINE INI DI SINI
+        window.db = db;
+        
         // Tab Logic
         function showTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
