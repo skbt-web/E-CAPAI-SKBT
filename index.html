@@ -576,5 +576,91 @@
             renderAnalisis();
         };
     </script>
+    <!-- TAMBAH DI BAWAH SEKALI SEBELUM </body> -->
+
+<script type="module">
+// ================= FIREBASE SETUP =================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+// 🔥 GANTI CONFIG INI
+const firebaseConfig = {
+  apiKey: "AIzaSyBgO8saVfliDuG5VZDueR9FHG64-DwRjEs",
+  authDomain: "ecapaiskbt.firebaseapp.com",
+  projectId: "ecapaiskbt",
+  storageBucket: "ecapaiskbt.firebasestorage.app",
+  messagingSenderId: "328855405603",
+  appId: "1:328855405603:web:32c5e193845b237e065d96"
+};
+
+// INIT
+const app = initializeApp(firebaseConfig);
+const dbFirestore = getFirestore(app);
+const auth = getAuth(app);
+
+// LOGIN (WAJIB untuk rules)
+signInAnonymously(auth);
+
+// GLOBAL
+window.dbFirestore = dbFirestore;
+window.fb = { collection, addDoc, getDocs };
+
+// ================= OVERRIDE FUNCTION ASAL =================
+
+// MODIFY saveData (tanpa ubah logic asal)
+const originalSaveData = window.saveData;
+
+window.saveData = async function(event, type) {
+    // RUN FUNCTION ASAL
+    originalSaveData(event, type);
+
+    // AMBIL DATA TERAKHIR
+    const lastData = window.db[type][window.db[type].length - 1];
+
+    try {
+        await window.fb.addDoc(
+            window.fb.collection(
+                window.dbFirestore,
+                type === 'sekolah' ? 'rekod_sekolah' : 'rekod_guru'
+            ),
+            lastData
+        );
+        console.log("✅ Data masuk Firestore");
+    } catch (err) {
+        console.error("❌ Error Firestore:", err);
+    }
+};
+
+// ================= LOAD DATA =================
+async function loadFirestoreData() {
+    const jenis = [
+        { key: 'sekolah', col: 'rekod_sekolah' },
+        { key: 'guru', col: 'rekod_guru' }
+    ];
+
+    for (let j of jenis) {
+        const snapshot = await window.fb.getDocs(
+            window.fb.collection(window.dbFirestore, j.col)
+        );
+
+        window.db[j.key] = [];
+
+        snapshot.forEach(doc => {
+            window.db[j.key].push(doc.data());
+        });
+
+        localStorage.setItem(`skbt_${j.key}`, JSON.stringify(window.db[j.key]));
+    }
+
+    window.renderTables();
+    window.renderAnalisis();
+}
+
+// ================= AUTO LOAD =================
+window.addEventListener("load", async () => {
+    await loadFirestoreData();
+});
+</script>
 </body>
 </html>
