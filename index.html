@@ -30,7 +30,7 @@
                     <i class="fas fa-graduation-cap text-3xl text-yellow-600"></i>
                 </div>
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-800">e-CAPAI SK BUKIT TONGKAT</h1>
+                    <h1 class="text-2xl font-bold text-gray-800">e-CAPAI SKBT</h1>
                     <p class="text-sm text-gray-700">Sistem Rekod Pencapaian Sekolah & Guru</p>
                 </div>
             </div>
@@ -45,7 +45,7 @@
     <!-- Navigation -->
     <nav class="bg-white shadow-sm sticky top-0 z-10 no-print">
         <div class="container mx-auto flex overflow-x-auto border-b">
-            <button onclick="showTab('sekolah')" id="tab-sekolah" class="px-6 py-4 whitespace-nowrap transition hover:bg-yellow-50 tab-active">
+            <button onclick="showTab('sekolah')" id="tab-sekolah" class="px-6 py-4 whitespace-nowrap transition hover:bg-yellow-50">
                 <i class="fas fa-school mr-2"></i> SEKOLAH
             </button>
             <button onclick="showTab('individu')" id="tab-individu" class="px-6 py-4 whitespace-nowrap transition hover:bg-yellow-50">
@@ -57,8 +57,8 @@
             <button onclick="showTab('rekod-guru')" id="tab-rekod-guru" class="px-6 py-4 whitespace-nowrap transition hover:bg-yellow-50">
                 <i class="fas fa-users-viewfinder mr-2"></i> REKOD GURU
             </button>
-            <button onclick="showTab('analisa')" id="tab-analisa" class="px-6 py-4 whitespace-nowrap transition hover:bg-yellow-50 text-blue-600">
-                <i class="fas fa-chart-pie mr-2"></i> ANALISA PENCAPAIAN
+            <button onclick="showTab('analisis')" id="tab-analisis" class="px-6 py-4 whitespace-nowrap transition hover:bg-yellow-50 text-blue-600 tab-active">
+                <i class="fas fa-chart-pie mr-2"></i> ANALISIS PENCAPAIAN
             </button>
         </div>
     </nav>
@@ -67,7 +67,7 @@
     <main class="container mx-auto p-4 md:p-8">
 
         <!-- BORANG SEKOLAH -->
-        <section id="content-sekolah" class="tab-content">
+        <section id="content-sekolah" class="tab-content hidden">
             <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg border-t-8 border-yellow-400 p-6 md:p-10">
                 <h2 class="text-2xl font-bold mb-6 flex items-center text-gray-800">
                     <i class="fas fa-file-signature text-yellow-500 mr-3"></i> BORANG REKOD SEKOLAH
@@ -260,8 +260,8 @@
             </div>
         </section>
 
-        <!-- ANALISA PENCAPAIAN (NEW TAB) -->
-        <section id="content-analisa" class="tab-content hidden">
+        <!-- ANALISIS PENCAPAIAN -->
+        <section id="content-analisis" class="tab-content">
             <div class="space-y-8">
                 <!-- Statistik Ringkas -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 no-print">
@@ -283,30 +283,30 @@
                     </div>
                 </div>
 
-                <!-- Jadual Analisa Mengikut Guru -->
+                <!-- Jadual Analisis Mengikut Guru -->
                 <div class="bg-white rounded-xl shadow-lg p-6">
                     <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
-                        <i class="fas fa-table text-blue-500 mr-2"></i> ANALISA INDUK PENCAPAIAN GURU
+                        <i class="fas fa-table text-blue-500 mr-2"></i> ANALISIS INDUK PENCAPAIAN GURU
                     </h2>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="bg-gray-100 text-gray-700">
                                     <th class="p-3 border">NAMA GURU</th>
-                                    <th class="p-3 border">BIL. PENCAPAIAN</th>
+                                    <th class="p-3 border text-center">BIL. PENCAPAIAN</th>
                                     <th class="p-3 border">SENARAI PROGRAM & TAHAP</th>
                                     <th class="p-3 border text-center">EVIDEN (DRIVE)</th>
                                 </tr>
                             </thead>
-                            <tbody id="analisa-guru-body"></tbody>
+                            <tbody id="analisis-guru-body"></tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- Footer Analisa -->
+                <!-- Footer Analisis -->
                 <div class="bg-blue-50 p-6 rounded-xl border border-blue-100 no-print">
-                    <h4 class="font-bold text-blue-800 mb-2">Nota Semakan Eksternal</h4>
-                    <p class="text-sm text-blue-700">Bahagian ini disediakan untuk tujuan pemantauan (Audit/Nazir/PPD). Semua pautan Google Drive adalah pautan terus ke repositori eviden yang sah bagi setiap guru SKBT.</p>
+                    <h4 class="font-bold text-blue-800 mb-2">Nota Semakan Analisis</h4>
+                    <p class="text-sm text-blue-700">Bahagian ini disediakan untuk tujuan pemantauan berkala. Semua pautan Google Drive di sini diselaraskan terus mengikut nama guru yang berdaftar dalam pangkalan data e-CAPAI SKBT.</p>
                 </div>
             </div>
         </section>
@@ -326,7 +326,7 @@
     </div>
 
     <script>
-        // Data Guru List (Static for mapping)
+        // Data Guru List
         const MASTER_GURU_LIST = [
             { name: "ADLIN FAZLINDA BINTI ASNAN", drive: "https://drive.google.com/drive/folders/1u_kumvl2ChnxHPmekUgObtxx2zdqHSTN?usp=sharing" },
             { name: "DAYANG NORFARAHAIN FAEEZA BINTI HASSIM", drive: "https://drive.google.com/drive/folders/1tuEea9LUIA-zF2XD2oyTcLiQhtR-6VIK?usp=sharing" },
@@ -358,7 +358,7 @@
             { name: "NOR AZAH BINTI MORI", drive: "https://drive.google.com/drive/folders/1mEFlaUTpTYQi9BgonoJ4GB7SrWSePoCa?usp=sharing" }
         ];
 
-        // Data Store (Using localStorage)
+        // Local Data Store
         let db = {
             sekolah: JSON.parse(localStorage.getItem('skbt_sekolah') || '[]'),
             guru: JSON.parse(localStorage.getItem('skbt_guru') || '[]')
@@ -372,10 +372,10 @@
             document.getElementById('tab-' + tabId).classList.add('tab-active');
             
             if(tabId.includes('rekod')) renderTables();
-            if(tabId === 'analisa') renderAnalisa();
+            if(tabId === 'analisis') renderAnalisis();
         }
 
-        // Copy Link Logic
+        // Copy Link
         function copyShareLink() {
             const dummy = document.createElement('input');
             const text = window.location.href;
@@ -384,10 +384,10 @@
             dummy.select();
             document.execCommand('copy');
             document.body.removeChild(dummy);
-            alert('Pautan Dashboard Berjaya Disalin! Anda boleh kongsikan pautan ini untuk tujuan semakan.');
+            alert('Pautan Dashboard Berjaya Disalin! Sesuai untuk tujuan semakan pihak luar.');
         }
 
-        // Guru Eviden Logic
+        // Update Guru Link in Form
         function updateEvidenGuru() {
             const select = document.getElementById('guruSelect');
             const wrapper = document.getElementById('pautanGuruWrapper');
@@ -403,7 +403,7 @@
             }
         }
 
-        // Save Data Logic
+        // Save Data
         function saveData(event, type) {
             event.preventDefault();
             const date = new Date().toLocaleDateString('ms-MY');
@@ -443,7 +443,7 @@
             showTab(`rekod-${type}`);
         }
 
-        // Render Tables Logic
+        // Render Tables
         function renderTables() {
             const renderRow = (item, index, type) => `
                 <tr class="hover:bg-gray-50">
@@ -460,37 +460,29 @@
                             <button onclick="previewItem('${type}', ${item.id})" class="p-2 text-blue-600 hover:bg-blue-100 rounded" title="Preview"><i class="fas fa-eye"></i></button>
                             <button onclick="editItem('${type}', ${item.id})" class="p-2 text-yellow-600 hover:bg-yellow-100 rounded" title="Edit"><i class="fas fa-edit"></i></button>
                             <button onclick="deleteItem('${type}', ${item.id})" class="p-2 text-red-600 hover:bg-red-100 rounded" title="Buang"><i class="fas fa-trash"></i></button>
-                            <button onclick="window.print()" class="p-2 text-gray-600 hover:bg-gray-100 rounded" title="Cetak"><i class="fas fa-print"></i></button>
                         </div>
                     </td>
                 </tr>
             `;
 
-            document.getElementById('table-sekolah-body').innerHTML = db.sekolah.length ? db.sekolah.map((item, idx) => renderRow(item, idx, 'sekolah')).join('') : '<tr><td colspan="8" class="p-8 text-center text-gray-400">Tiada data dijumpai</td></tr>';
-            document.getElementById('table-guru-body').innerHTML = db.guru.length ? db.guru.map((item, idx) => renderRow(item, idx, 'guru')).join('') : '<tr><td colspan="9" class="p-8 text-center text-gray-400">Tiada data dijumpai</td></tr>';
+            document.getElementById('table-sekolah-body').innerHTML = db.sekolah.length ? db.sekolah.map((item, idx) => renderRow(item, idx, 'sekolah')).join('') : '<tr><td colspan="8" class="p-8 text-center text-gray-400">Tiada data sekolah</td></tr>';
+            document.getElementById('table-guru-body').innerHTML = db.guru.length ? db.guru.map((item, idx) => renderRow(item, idx, 'guru')).join('') : '<tr><td colspan="9" class="p-8 text-center text-gray-400">Tiada data guru</td></tr>';
         }
 
-        // Render Analisa Logic (NEW)
-        function renderAnalisa() {
-            // Calculate Stats
+        // Render Analisis
+        function renderAnalisis() {
+            // Stats calculation
             const allData = [...db.sekolah, ...db.guru];
-            const stats = {
-                'ANTARABANGSA': 0,
-                'KEBANGSAAN': 0,
-                'NEGERI': 0,
-                'DAERAH': 0
-            };
-            allData.forEach(item => {
-                if(stats.hasOwnProperty(item.peringkat)) stats[item.peringkat]++;
-            });
+            const stats = { 'ANTARABANGSA': 0, 'KEBANGSAAN': 0, 'NEGERI': 0, 'DAERAH': 0 };
+            allData.forEach(item => { if(stats.hasOwnProperty(item.peringkat)) stats[item.peringkat]++; });
 
             document.getElementById('stat-antarabangsa').innerText = stats.ANTARABANGSA;
             document.getElementById('stat-kebangsaan').innerText = stats.KEBANGSAAN;
             document.getElementById('stat-negeri').innerText = stats.NEGERI;
             document.getElementById('stat-daerah').innerText = stats.DAERAH;
 
-            // Group Guru Data
-            const guruAnalisa = MASTER_GURU_LIST.map(master => {
+            // Guru List Processing
+            const guruList = MASTER_GURU_LIST.map(master => {
                 const achieves = db.guru.filter(g => g.guru === master.name);
                 return {
                     name: master.name,
@@ -500,14 +492,13 @@
                 };
             });
 
-            // Sort by count descending
-            guruAnalisa.sort((a, b) => b.count - a.count);
+            guruList.sort((a, b) => b.count - a.count);
 
-            document.getElementById('analisa-guru-body').innerHTML = guruAnalisa.map(g => `
+            document.getElementById('analisis-guru-body').innerHTML = guruList.map(g => `
                 <tr class="hover:bg-gray-50">
                     <td class="p-3 border font-semibold text-sm">${g.name}</td>
                     <td class="p-3 border text-center font-bold text-lg text-blue-700">${g.count}</td>
-                    <td class="p-3 border">${g.count > 0 ? g.details : '<span class="text-gray-400 italic text-xs">Tiada rekod aktif</span>'}</td>
+                    <td class="p-3 border">${g.count > 0 ? g.details : '<span class="text-gray-400 italic text-xs">Tiada rekod data</span>'}</td>
                     <td class="p-3 border text-center">
                         <a href="${g.drive}" target="_blank" class="text-blue-600 hover:text-blue-800">
                             <i class="fab fa-google-drive text-xl"></i>
@@ -517,21 +508,19 @@
             `).join('');
         }
 
-        // Preview Logic
+        // Preview
         function previewItem(type, id) {
             const item = db[type].find(i => i.id == id);
             const content = `
                 <div class="p-4 bg-yellow-50 rounded-lg">
-                    <p><strong>Tarikh Muat Naik:</strong> ${item.tarikh}</p>
-                    ${item.guru ? `<p><strong>Nama Guru:</strong> ${item.guru}</p>` : ''}
+                    <p><strong>Tarikh:</strong> ${item.tarikh}</p>
+                    ${item.guru ? `<p><strong>Guru:</strong> ${item.guru}</p>` : ''}
                     <p><strong>Peringkat:</strong> ${item.peringkat}</p>
                     <p><strong>Program:</strong> ${item.program}</p>
-                    <p><strong>Anjuran:</strong> ${item.anjuran}</p>
-                    <p><strong>Kategori:</strong> ${item.kategori}</p>
                     <p><strong>Pencapaian:</strong> ${item.pencapaian}</p>
                     <div class="mt-4 pt-4 border-t">
-                        <a href="${item.eviden}" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-lg inline-block">
-                            <i class="fab fa-google-drive mr-2"></i> Lihat Sijil/Eviden di Drive
+                        <a href="${item.eviden}" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-lg inline-block text-sm">
+                            <i class="fab fa-google-drive mr-2"></i> Buka Folder Eviden
                         </a>
                     </div>
                 </div>
@@ -540,21 +529,19 @@
             document.getElementById('previewModal').classList.remove('hidden');
         }
 
-        function closeModal() {
-            document.getElementById('previewModal').classList.add('hidden');
-        }
+        function closeModal() { document.getElementById('previewModal').classList.add('hidden'); }
 
-        // Delete Logic
+        // Delete
         function deleteItem(type, id) {
-            if(confirm('Adakah anda pasti mahu memadam rekod ini?')) {
+            if(confirm('Padam rekod ini?')) {
                 db[type] = db[type].filter(item => item.id != id);
                 localStorage.setItem(`skbt_${type}`, JSON.stringify(db[type]));
                 renderTables();
-                if(!document.getElementById('content-analisa').classList.contains('hidden')) renderAnalisa();
+                if(!document.getElementById('content-analisis').classList.contains('hidden')) renderAnalisis();
             }
         }
 
-        // Edit Logic
+        // Edit
         function editItem(type, id) {
             const item = db[type].find(i => i.id == id);
             showTab(type);
@@ -573,8 +560,6 @@
                 document.getElementById('anjuran-guru').value = item.anjuran;
                 document.getElementById('kategori-guru').value = item.kategori;
                 document.getElementById('capai-guru').value = item.pencapaian;
-                
-                // Select Guru
                 const select = document.getElementById('guruSelect');
                 for(let i=0; i<select.options.length; i++) {
                     if(select.options[i].text === item.guru) {
@@ -586,8 +571,10 @@
             }
         }
 
-        // Initial Load
-        window.onload = renderTables;
+        window.onload = () => {
+            renderTables();
+            renderAnalisis();
+        };
     </script>
 </body>
 </html>
