@@ -541,6 +541,33 @@
                 localStorage.setItem(`skbt_${type}`, JSON.stringify(db[type]));
                 renderTables();
                 if(!document.getElementById('content-analisis').classList.contains('hidden')) renderAnalisis();
+                // 🔥 TAMBAH DI SINI (JANGAN UBAH YANG ATAS)
+        (async () => {
+            try {
+                const snapshot = await window.fb.getDocs(
+                    window.fb.collection(
+                        window.dbFirestore,
+                        type === 'sekolah' ? 'rekod_sekolah' : 'rekod_guru'
+                    )
+                );
+
+                snapshot.forEach(async (docItem) => {
+                    if (docItem.data().id == id) {
+                        await window.fb.deleteDoc(
+                            window.fb.doc(
+                                window.dbFirestore,
+                                type === 'sekolah' ? 'rekod_sekolah' : 'rekod_guru',
+                                docItem.id
+                            )
+                        );
+                    }
+                });
+
+                console.log("✅ Deleted from Firestore");
+            } catch (err) {
+                console.error("❌ Delete error:", err);
+            }
+        })();
             }
         }
 
@@ -585,6 +612,7 @@
 // ================= FIREBASE SETUP =================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js; // TAMBAH INI
 import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 // 🔥 GANTI CONFIG INI
@@ -607,7 +635,7 @@ signInAnonymously(auth);
 
 // GLOBAL
 window.dbFirestore = dbFirestore;
-window.fb = { collection, addDoc, getDocs };
+window.fb = { collection, addDoc, getDocs, deleteDoc, doc };
 
 // ================= OVERRIDE FUNCTION ASAL =================
 
