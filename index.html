@@ -621,30 +621,7 @@ async function hantarKeFirestore(type, dataBaru) {
             renderAnalisis();
         };
     </script>
-    <!-- TAMBAH DI BAWAH SEKALI SEBELUM </body> -->
-
-<script type="module">
-// ================= FIREBASE SETUP =================
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js; // TAMBAH INI
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-// 🔥 GANTI CONFIG INI
-const firebaseConfig = {
-  apiKey: "AIzaSyBgO8saVfliDuG5VZDueR9FHG64-DwRjEs",
-  authDomain: "ecapaiskbt.firebaseapp.com",
-  projectId: "ecapaiskbt",
-  storageBucket: "ecapaiskbt.firebasestorage.app",
-  messagingSenderId: "328855405603",
-  appId: "1:328855405603:web:32c5e193845b237e065d96"
-};
-
-// INIT
-const app = initializeApp(firebaseConfig);
-const dbFirestore = getFirestore(app);
-const auth = getAuth(app);
-
+    
 // LOGIN (WAJIB untuk rules)
 signInAnonymously(auth);
 
@@ -731,6 +708,41 @@ window.addEventListener("load", async () => {
             }
         });
     </script>
+
+    <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    // Konfigurasi Firebase anda
+    const firebaseConfig = {
+        apiKey: "AIzaSyBgO8saVfliDuG5VZDueR9FHG64-DwRjEs",
+        authDomain: "ecapaiskbt.firebaseapp.com",
+        projectId: "ecapaiskbt",
+        storageBucket: "ecapaiskbt.firebasestorage.app",
+        messagingSenderId: "328855405603",
+        appId: "1:328855405603:web:32c5e193845b237e065d96"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const dbFirestore = getFirestore(app);
+
+    // Fungsi Global untuk menghantar data (diakses oleh fungsi saveData anda)
+    window.hantarKeFirestore = async (type, dataBaru) => {
+        try {
+            const collectionName = (type === 'sekolah') ? 'rekod_sekolah' : 'rekod_guru';
+            await addDoc(collection(dbFirestore, collectionName), {
+                ...dataBaru,
+                tarikh_simpan: serverTimestamp() // Tambah masa server
+            });
+            console.log("✅ Berjaya simpan ke Firestore");
+            return true;
+        } catch (err) {
+            console.error("❌ Gagal simpan ke Firestore:", err);
+            return false;
+        }
+    };
+</script>
     
 </body>
 </html>
