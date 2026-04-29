@@ -410,7 +410,7 @@
         async function saveData(event, type) {
             event.preventDefault();
             const date = new Date().toLocaleDateString('ms-MY');
-            const id = document.getElementById(`edit-id-${type}`).value || Date.now();
+            const id = document.getElementById(`edit-id-${type}`).value || Date.now().toString();
             
             let entry = { id: id, tarikh: date };
 
@@ -431,6 +431,29 @@
                 entry.kategori = document.getElementById('kategori-guru').value;
                 entry.pencapaian = document.getElementById('capai-guru').value;
             }
+            try {
+        // Tentukan nama koleksi berdasarkan 'type'
+        const collectionName = (type === 'sekolah') ? 'rekod_sekolah' : 'rekod_guru';
+        
+        // Hantar TERUS objek 'entry' ke Firestore
+        await window.fb.addDoc(
+            window.fb.collection(window.dbFirestore, collectionName), 
+            entry
+        );
+
+        // Simpan ke LocalStorage sebagai backup
+        db[type].push(entry);
+        localStorage.setItem(`skbt_${type}`, JSON.stringify(db[type]));
+        
+        alert('Berjaya! Rekod telah masuk ke Cloud Firestore.');
+        event.target.reset();
+        showTab(`rekod-${type}`);
+        
+    } catch (err) {
+        console.error("Ralat simpan:", err);
+        alert("Gagal simpan! Sila pastikan internet stabil. Ralat: " + err.message);
+    }
+}
 
             const existingIndex = db[type].findIndex(item => item.id == id);
             if (existingIndex > -1) {
