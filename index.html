@@ -445,6 +445,21 @@
             document.getElementById(`edit-id-${type}`).value = "";
             showTab(`rekod-${type}`);
         }
+        // 3. 🔥 Fungsi Baru untuk Firestore
+async function hantarKeFirestore(type, dataBaru) {
+    try {
+        const collectionName = (type === 'sekolah') ? 'rekod_sekolah' : 'rekod_guru';
+        
+        await window.fb.addDoc(
+            window.fb.collection(window.dbFirestore, collectionName),
+            dataBaru
+        );
+        console.log("✅ Rekod Berjaya Disimpan");
+    } catch (err) {
+        console.error("❌ Gagal simpan ke Firestore:", err);
+        alert("Amaran: Data disimpan di komputer ini sahaja (Offline). Ralat Cloud: " + err.message);
+    }
+}
 
         // Render Tables
         function renderTables() {
