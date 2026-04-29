@@ -407,7 +407,7 @@
         }
 
         // Save Data
-        function saveData(event, type) {
+        async function saveData(event, type) {
             event.preventDefault();
             const date = new Date().toLocaleDateString('ms-MY');
             const id = document.getElementById(`edit-id-${type}`).value || Date.now();
