@@ -360,8 +360,8 @@
 
         // Local Data Store
         let db = {
-            sekolah: JSON.parse(localStorage.getItem('skbt_sekolah') || '[]'),
-            guru: JSON.parse(localStorage.getItem('skbt_guru') || '[]')
+          sekolah: [],
+          guru: []  
         };
 
         // 🔥 TAMBAH LINE INI DI SINI
@@ -439,7 +439,6 @@
                 db[type].push(entry);
             }
 
-            localStorage.setItem(`skbt_${type}`, JSON.stringify(db[type]));
             alert('Rekod Berjaya Disimpan!');
             event.target.reset();
             document.getElementById(`edit-id-${type}`).value = "";
