@@ -626,8 +626,8 @@ async function hantarKeFirestore(type, dataBaru) {
 <script type="module">
 // ================= FIREBASE SETUP =================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js; // TAMBAH INI
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"; // TAMBAH INI
 import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 // 🔥 GANTI CONFIG INI
@@ -696,7 +696,7 @@ async function loadFirestoreData() {
         snapshot.forEach(doc => {
             window.db[j.key].push(doc.data());
         });
-
+        // TAMBAH INI - sync localStorage dengan Firestore
         localStorage.setItem(`skbt_${j.key}`, JSON.stringify(window.db[j.key]));
     }
 
